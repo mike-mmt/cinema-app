@@ -7,10 +7,7 @@ const verifyJWT = require("../utils/verify-jwt-middleware");
 const { validateMovieData } = require("../utils/form-validations");
 const uploadFile = require("../utils/upload-to-cloudinary");
 
-// multer file middleware setup
-const multer = require("multer");
-const storage = multer.memoryStorage();
-const uploadMiddleware = multer({ storage });
+const uploadMiddleware = require("../utils/multer-middleware");
 
 router.get("/:movieId", verifyJWT, async (req, res, next) => {
   try {
@@ -40,7 +37,7 @@ router.get("/:movieId", verifyJWT, async (req, res, next) => {
 
 router.post(
   "/add",
-  /*[verifyJWT, */ uploadMiddleware.single("image") /*]*/, // middleware
+  [verifyJWT, uploadMiddleware.single("image")], // middleware
   async (req, res, next) => {
     try {
       req.body.genres = JSON.parse(req.body.genres);
@@ -59,7 +56,9 @@ router.post(
         isCurrentlyScreening: true,
       });
       await newMovie.save();
-      return res.status(201).json({ message: "success" });
+      return res
+        .status(201)
+        .json({ message: "success", createdMovie: newMovie });
     } catch (error) {
       next(error);
     }

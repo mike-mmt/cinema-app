@@ -9,7 +9,7 @@ router.get("/", verifyJWT, async (req, res, next) => {
     const allMovies = await Movie.find()
       .where("isCurrentlyScreening")
       .equals(true)
-      .select("_id title genres mainPhotoId")
+      .select("_id title genres mainPhotoUrl")
       .exec();
     return res.status(200).json(allMovies);
   } catch (error) {
