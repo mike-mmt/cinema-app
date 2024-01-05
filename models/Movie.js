@@ -3,11 +3,12 @@ const mongoose = require("mongoose");
 const movieSchema = new mongoose.Schema({
   title: String,
   year: Number,
-  genre: String,
+  genres: [String],
   director: String,
-  actors: [{ firstName: String, lastName: String }],
-  mainPhotoId: String,
-  galleryPhotoIds: [String],
+  actors: [String],
+  mainPhotoUrl: String,
+  galleryPhotoUrls: [String],
+  isCurrentlyScreening: Boolean,
 });
 
 module.exports = mongoose.model("Movie", movieSchema);
