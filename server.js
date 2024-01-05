@@ -11,6 +11,9 @@ app.use(express.json());
 
 app.use("/register", require("./routes/register"));
 app.use("/login", require("./routes/login"));
+// app.use("/upload", require("./routes/upload"));
+app.use("/movie", require("./routes/movie"));
+app.use("/movies", require("./routes/movies"));
 
 app.listen(port, () => {
   // perform a database connection when server starts

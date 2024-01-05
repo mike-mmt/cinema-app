@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const crypto = require("crypto");
 const Account = require("../models/Account");
+const { validatePassword } = require("../utils/password-hashing");
 
 router.post("/", async (req, res, next) => {
   try {
@@ -47,12 +48,5 @@ router.post("/", async (req, res, next) => {
     next(error);
   }
 });
-
-function validatePassword(inputPassword, hashedPassword, salt) {
-  return (
-    hashedPassword ===
-    crypto.pbkdf2Sync(inputPassword, salt, 10000, 512, "sha512").toString("hex")
-  );
-}
 
 module.exports = router;
