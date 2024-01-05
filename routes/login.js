@@ -1,7 +1,10 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
+const crypto = require("crypto");
+const Account = require("../models/Account");
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const account = await Account.findOne()
@@ -12,12 +15,34 @@ router.post("/", async (req, res) => {
     if (account === null) {
       return res.status(404).json({ error: "account does not exist" });
     }
-    const validation = validatePassword(
+    const validLogin = validatePassword(
       password,
       account.passwordHash,
       account.passwordSalt
     );
-    // to do: json web token
+
+    if (validLogin) {
+      const payload = {
+        id: account._id,
+        email,
+      };
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        { expiresIn: 86400 },
+        (err, token) => {
+          if (err) return res.status(200).json({ message: err });
+          return res.json({
+            message: "success",
+            token: "Bearer " + token,
+          });
+        }
+      );
+    } else {
+      return res.status(400).json({
+        message: "Invalid email or password",
+      });
+    }
   } catch (error) {
     next(error);
   }

@@ -2,12 +2,6 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
-const crypto = require("crypto");
-const Account = require("./models/Account");
-const Order = require("./models/Order");
-const Photo = require("./models/Photo");
-const Screening = require("./models/Screening");
-const Movie = require("./models/Movie");
 const { NONAME } = require("dns");
 
 require("dotenv").config({ path: "./config.env" });

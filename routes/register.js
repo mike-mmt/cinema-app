@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const crypto = require("crypto");
+const Account = require("../models/Account");
 
 router.post("/", async (req, res, next) => {
   try {
     const { email, firstName, lastName, password } = req.body;
-    const phone = req.body["phone"] ?? None;
     const [hashedPassword, salt] = getHashedPassword(password);
     const existingAccount = await Account.findOne()
       .where("email")
@@ -22,7 +23,7 @@ router.post("/", async (req, res, next) => {
       passwordHash: hashedPassword,
       passwordSalt: salt,
       orders: [],
-      ...(phone !== None && { phone: phone }),
+      ...(req.body["phone"] && { phone: req.body["phone"] }),
     });
     // if (phone) {
     //   newAccount.phone = phone;
