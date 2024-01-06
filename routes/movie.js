@@ -8,6 +8,12 @@ const Photo = require("../models/Photo");
 const { validateMovieData } = require("../utils/form-validations");
 const uploadFile = require("../utils/upload-to-cloudinary");
 const deletePhoto = require("../utils/delete-photo");
+const {
+  newPhotoFromFile,
+  newPhotoFromUrl,
+  newPhotosFromFileArray,
+  newPhotosFromUrlArray,
+} = require("../utils/new-photo");
 
 const uploadMiddleware = require("../utils/multer-middleware");
 
@@ -39,7 +45,11 @@ router.get("/:movieId", verifyJWT, async (req, res, next) => {
 
 router.post(
   "/add",
-  [verifyJWT, uploadMiddleware.single("image")], // middleware
+  [
+    verifyJWT,
+    uploadMiddleware.single("image"),
+    uploadMiddleware.array("galleryImages"),
+  ], // middleware
   async (req, res, next) => {
     try {
       req.body.genres = JSON.parse(req.body.genres);
@@ -50,7 +60,7 @@ router.post(
         return res.status(400).json({ error: "invalid form data" });
       }
 
-      const photo = await handlePhoto(req);
+      const photo = await handleReqPhoto(req);
 
       const newMovie = new Movie({
         ...req.body,
@@ -79,19 +89,61 @@ router.delete("/:movieId", verifyJWT, async (req, res, next) => {
   }
 });
 
-router.patch("/:movieId", verifyJWT, async (req, res, next) => {});
-
-async function handlePhoto(req) {
-  const cloudPhoto = req.body.photoUrl ? null : await uploadFile(req.file);
-  const databasePhotoData = req.body.photoUrl
-    ? { type: "external", url: req.body.photoUrl }
-    : {
-        type: "cloudinary",
-        cloudinaryPublicId: cloudPhoto.public_id,
-        url: cloudPhoto.secure_url,
+router.patch(
+  "/:movieId",
+  [
+    verifyJWT,
+    uploadMiddleware.fields([
+      { name: "image", maxCount: 1 },
+      { name: "galleryImages", maxCount: 12 },
+    ]),
+  ], // middleware
+  async (req, res, next) => {
+    try {
+      // conditionally add fields
+      const newMovie = {
+        ...(req.body.title && { title: req.body.title }),
+        ...(req.body.director && { director: req.body.director }),
+        ...(req.body.year && { year: parseInt(req.body.year) }),
+        ...(req.body.isCurrentlyScreening && {
+          isCurrentlyScreening: req.body.isCurrentlyScreening === "true",
+        }),
       };
-  const databasePhoto = await new Photo(databasePhotoData).save();
-  return databasePhoto._id;
-}
+      const genres = req.body.genres ? JSON.parse(req.body.genres) : [];
+      const actors = req.body.actors ? JSON.parse(req.body.actors) : [];
+      const galleryPhotoIds = [];
+      // photo handling
+      if (req.files.image || req.body.photoUrl) {
+        newMovie.mainPhotoId = req.body.photoUrl
+          ? await newPhotoFromUrl(req.body.photoUrl)
+          : await newPhotoFromFile(req.file.image[0]);
+      }
+      if (req.files.galleryImages) {
+        const ids = await newPhotosFromFileArray(req.files.galleryImages);
+        galleryPhotoIds.push(...ids);
+      }
+      if (req.body.galleryPhotoUrls) {
+        const ids = await newPhotosFromUrlArray(req.galleryPhotoUrls);
+        galleryPhotoIds.push(...ids);
+      }
+      // update the movie
+      const update = await Movie.findByIdAndUpdate(
+        req.params.movieId,
+        {
+          ...newMovie,
+          $addToSet: {
+            genres: { $each: genres || [] },
+            actors: { $each: actors || [] },
+            galleryPhotoIds: { $each: galleryPhotoIds || [] },
+          },
+        },
+        { new: true }
+      );
+      return res.status(200).json({ message: "success", update });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 module.exports = router;

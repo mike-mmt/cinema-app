@@ -37,15 +37,15 @@ router.get("/", verifyJWT, async (req, res, next) => {
         as: "screenings",
       })
       .project({
-        // title: 1,
-        // year: 1,
-        // genres: 1,
-        // director: 1,
-        // actors: 1,
+        title: 1,
+        year: 1,
+        genres: 1,
+        director: 1,
+        actors: 1,
         photoUrl: { $arrayElemAt: ["$photoUrl.url", 0] },
         galleryPhotoUrls: {
           $map: {
-            input: "galleryPhotoUrls",
+            input: "$galleryPhotoUrls",
             as: "photo",
             in: "$$photo.url",
           },
