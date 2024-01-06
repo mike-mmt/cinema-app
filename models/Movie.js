@@ -6,7 +6,7 @@ const movieSchema = new mongoose.Schema({
   genres: [String],
   director: String,
   actors: [String],
-  mainPhotoUrl: String,
+  mainPhotoId: mongoose.SchemaTypes.ObjectId,
   galleryPhotoUrls: [String],
   isCurrentlyScreening: Boolean,
 });

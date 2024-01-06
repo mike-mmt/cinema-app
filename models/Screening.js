@@ -7,7 +7,8 @@ const screeningSchema = new mongoose.Schema({
   sound: String,
   seats: [
     {
-      number: String,
+      row: String,
+      number: Number,
       class: String,
       taken: Boolean,
     },

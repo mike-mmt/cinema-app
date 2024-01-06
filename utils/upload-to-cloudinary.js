@@ -28,7 +28,7 @@ async function upload(file) {
   try {
     // Upload file to cloudinary
     const result = await cloudinary.uploader.upload(fileDataUrl);
-    return result.secure_url;
+    return result;
   } catch (error) {
     throw new Error("Failed to upload file to cloudinary");
   }
