@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 
 const screeningSchema = new mongoose.Schema({
-  movieId: String,
+  movieId: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "Movie",
+  },
   date: Date,
   type: String,
   sound: String,

@@ -6,8 +6,14 @@ const movieSchema = new mongoose.Schema({
   genres: [String],
   director: String,
   actors: [String],
-  mainPhotoId: mongoose.SchemaTypes.ObjectId,
-  galleryPhotoUrls: [String],
+  mainPhotoId: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "Photo",
+  },
+  galleryPhotoIds: {
+    type: [mongoose.SchemaTypes.ObjectId],
+    ref: "Photo",
+  },
   isCurrentlyScreening: Boolean,
 });
 

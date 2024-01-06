@@ -1,8 +1,14 @@
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
-  screeningId: String,
-  seats: [String],
+  screeningId: { type: mongoose.SchemaTypes.ObjectId, ref: "Screening" },
+  seats: [
+    {
+      row: String,
+      number: Number,
+      class: String,
+    },
+  ],
   price: Number,
   paid: Boolean,
   date: Date,

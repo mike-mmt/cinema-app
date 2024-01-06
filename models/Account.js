@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Order = require("./Order");
 
 const accountSchema = new mongoose.Schema({
   firstName: String,
@@ -8,7 +7,7 @@ const accountSchema = new mongoose.Schema({
   passwordHash: String,
   passwordSalt: String,
   phone: String,
-  orders: [Order.schema],
+  orders: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Order" }],
 });
 
 module.exports = mongoose.model("Account", accountSchema);
