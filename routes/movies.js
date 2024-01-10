@@ -42,6 +42,7 @@ router.get("/", verifyJWT, async (req, res, next) => {
         genres: 1,
         director: 1,
         actors: 1,
+        screenings: 1,
         photoUrl: { $arrayElemAt: ["$photoUrl.url", 0] },
         galleryPhotoUrls: {
           $map: {
