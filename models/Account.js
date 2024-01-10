@@ -7,6 +7,7 @@ const accountSchema = new mongoose.Schema({
   passwordHash: String,
   passwordSalt: String,
   phone: String,
+  isAdmin: Boolean,
   orders: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Order" }],
 });
 

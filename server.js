@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const { NONAME } = require("dns");
+const setAdminAccount = require("./utils/set-admin-account");
 
 require("dotenv").config({ path: "./config.env" });
 const port = process.env.PORT || 5000;
@@ -23,5 +24,6 @@ app.listen(port, () => {
 
 async function mainDatabaseConnection() {
   await mongoose.connect("mongodb://127.0.0.1:27017/cinema");
+  await setAdminAccount();
   console.log("Database connected!");
 }

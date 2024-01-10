@@ -1,7 +1,6 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
-const crypto = require("crypto");
 const Account = require("../models/Account");
 const { validatePassword } = require("../utils/password-hashing");
 
@@ -32,8 +31,8 @@ router.post("/", async (req, res, next) => {
         process.env.JWT_SECRET,
         { expiresIn: 86400 },
         (err, token) => {
-          if (err) return res.status(200).json({ message: err });
-          return res.json({
+          if (err) return res.status(500).json({ message: err });
+          return res.status(200).json({
             message: "success",
             token: "Bearer " + token,
           });

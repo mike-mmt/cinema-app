@@ -32,6 +32,7 @@ router.post("/", async (req, res, next) => {
       passwordHash: hashedPassword,
       passwordSalt: salt,
       orders: [],
+      isAdmin: false,
       ...(req.body["phone"] && { phone: req.body["phone"] }),
     });
 
