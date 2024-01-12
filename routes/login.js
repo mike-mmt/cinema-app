@@ -12,9 +12,11 @@ router.post("/", async (req, res, next) => {
       .equals(email)
       .select("passwordHash passwordSalt")
       .exec();
+
     if (account === null) {
       return res.status(404).json({ error: "account does not exist" });
     }
+
     const validLogin = validatePassword(
       password,
       account.passwordHash,
@@ -31,7 +33,7 @@ router.post("/", async (req, res, next) => {
         process.env.JWT_SECRET,
         { expiresIn: 86400 },
         (err, token) => {
-          if (err) return res.status(500).json({ message: err });
+          // if (err) return res.status(500).json({ message: err });
           return res.status(200).json({
             message: "success",
             token: "Bearer " + token,
@@ -44,7 +46,8 @@ router.post("/", async (req, res, next) => {
       });
     }
   } catch (error) {
-    next(error);
+    console.log(error);
+    // next(error);
   }
 });
 

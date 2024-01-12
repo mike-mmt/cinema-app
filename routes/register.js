@@ -12,7 +12,7 @@ router.post("/", async (req, res, next) => {
       return res.status(400).json({ error: "invalid form data" });
     }
     const { email, firstName, lastName, password } = req.body;
-    email = email.toLowerCase();
+    // email = email.toLowerCase();
 
     const [hashedPassword, salt] = getHashedPassword(password);
     const existingAccount = await Account.findOne()
@@ -28,12 +28,11 @@ router.post("/", async (req, res, next) => {
     const account = new Account({
       firstName,
       lastName,
-      email,
+      email: email.toLowerCase(),
       passwordHash: hashedPassword,
       passwordSalt: salt,
       orders: [],
       isAdmin: false,
-      ...(req.body["phone"] && { phone: req.body["phone"] }),
     });
 
     await account.save();

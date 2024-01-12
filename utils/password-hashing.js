@@ -1,3 +1,5 @@
+const crypto = require("crypto");
+
 function getHashedPassword(inputPassword) {
   const salt = crypto.randomBytes(16).toString("hex");
 

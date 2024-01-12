@@ -1,10 +1,10 @@
 function validateRegisterData(data) {
   const { email, firstName, lastName, password } = data;
-  email = email.toLowerCase();
+  const emailLower = email.toLowerCase();
 
   // /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isValidEmail = /^[a-z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-z0-9.-]+$/.test(
-    email
+    emailLower
   );
   const isValidFirstName = firstName.length > 0 && firstName.length < 32;
   const isValidLastName = lastName.length > 0 && lastName.length < 32;
