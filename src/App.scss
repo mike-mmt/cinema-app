@@ -34,13 +34,14 @@ body {
 
 $anim-duration: 15s;
 .gradient-first-layer {
+  opacity: 0;
   background: linear-gradient(0deg, $black, $gunmetal);
-  animation-name: fade-in;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: 1;
+  animation-name: fade-in-first-layer;
+  // animation-timing-function: ease-in-out;
+  // animation-iteration-count: 1;
   animation-delay: calc($anim-duration/2);
-  animation-duration: 0;
-  animation-direction: alternate;
+  animation-duration: 1ms;
+  animation-fill-mode: forwards;
   position: absolute;
   top: 0;
   left: 0;
@@ -48,6 +49,7 @@ $anim-duration: 15s;
   min-height: 20em;
 }
 .gradient-loop {
+  opacity: 0;
   background: linear-gradient(0deg, $black, $rosered);
   animation-name: fade-loop;
   animation-timing-function: ease-in-out;

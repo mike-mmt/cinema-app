@@ -24,13 +24,12 @@ body {
 }
 
 .gradient-first-layer {
+  opacity: 0;
   background: linear-gradient(0deg, black, #222b30);
-  animation-name: fade-in;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: 1;
+  animation-name: fade-in-first-layer;
   animation-delay: 7.5s;
-  animation-duration: 0;
-  animation-direction: alternate;
+  animation-duration: 1ms;
+  animation-fill-mode: forwards;
   position: absolute;
   top: 0;
   left: 0;
@@ -39,6 +38,7 @@ body {
 }
 
 .gradient-loop {
+  opacity: 0;
   background: linear-gradient(0deg, black, #cc2d57);
   animation-name: fade-loop;
   animation-timing-function: ease-in-out;
