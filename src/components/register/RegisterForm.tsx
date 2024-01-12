@@ -33,7 +33,7 @@ export default function RegisterForm() {
         .required("Required")
         .max(128, "Maksymalnie 128 znaków"),
     }),
-    onSubmit: (values) => {
+    onSubmit: (values: valuesType) => {
       sendRegisterData(values);
       formik.resetForm();
     },

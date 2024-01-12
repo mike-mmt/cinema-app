@@ -1,8 +1,8 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-// import { Cookie } from "js-cookie";
-// import { useState } from "react";
+import { setToken } from "../../utils/token";
+import { useNavigate } from "react-router-dom";
 
 interface valuesType {
   email: string;
@@ -11,6 +11,7 @@ interface valuesType {
 
 export default function LoginForm() {
   // const [responseOutput, setResponseOutput] = useState("");
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -38,7 +39,11 @@ export default function LoginForm() {
         "http://localhost:5000" + "/login",
         values
       );
-
+        if (response.status === 200 && response.data.token) {
+          setToken(response.data.token)
+          navigate('/repertoire')
+        }
+        
       console.log(response.status, response.data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
