@@ -1,21 +1,30 @@
 /* SCSS HEX */
+$black: #000000ff;
+$crimson: #cd2d40ff;
+$rosered: #cc2d57;
+$magnolia: #fff6ffff;
+$outer-space: #637681; //#45555eff;
+$gunmetal: #222b30ff;
+
 body {
-  background-color: black;
-  color: #fff6ff;
+  background-color: $black;
+  color: $magnolia;
   margin: 0;
   padding: 0;
   font-family: "Josefin Sans", sans-serif;
   font-weight: 500;
+  // background-color: #242424;
+  // background: linear-gradient(0deg, $black, $rosered, $black);
+  // background-size: 400% 400%;
+  // animation: gradient 15s ease infinite;
   height: 100vh;
 }
-
 .main-home {
   position: relative;
   width: 100%;
 }
-
 .black-background {
-  background-color: black;
+  background-color: $black;
   position: absolute;
   top: 0;
   left: 0;
@@ -23,12 +32,13 @@ body {
   height: 100vw;
 }
 
+$anim-duration: 15s;
 .gradient-first-layer {
-  background: linear-gradient(0deg, black, #222b30);
+  background: linear-gradient(0deg, $black, $gunmetal);
   animation-name: fade-in;
   animation-timing-function: ease-in-out;
   animation-iteration-count: 1;
-  animation-delay: 7.5s;
+  animation-delay: calc($anim-duration/2);
   animation-duration: 0;
   animation-direction: alternate;
   position: absolute;
@@ -37,14 +47,13 @@ body {
   width: 100%;
   min-height: 20em;
 }
-
 .gradient-loop {
-  background: linear-gradient(0deg, black, #cc2d57);
+  background: linear-gradient(0deg, $black, $rosered);
   animation-name: fade-loop;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
   animation-delay: 1s;
-  animation-duration: 15s;
+  animation-duration: $anim-duration;
   position: absolute;
   top: 0;
   left: 0;
@@ -60,6 +69,7 @@ body {
     opacity: 1;
   }
 }
+
 @keyframes fade-loop {
   0% {
     opacity: 0;
@@ -71,6 +81,20 @@ body {
     opacity: 0;
   }
 }
+
+// .main-home {
+//   background: linear-gradient($black, #ca0054, $gunmetal);
+//   background-size: 400% 400%;
+//   animation: gradient 15s ease infinite;
+//   // animation-name: gradient;
+//   // animation-duration: 15s;
+//   // animation-iteration-count: infinite;
+//   // height: 100vh;
+//   // animation-name: gradient-anim;
+//   // animation-duration: 5s;
+//   // animation-iteration-count: infinite;
+// }
+
 /* #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -112,4 +136,4 @@ body {
 
 .read-the-docs {
   color: #888;
-} *//*# sourceMappingURL=App.css.map */
+} */
