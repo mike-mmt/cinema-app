@@ -11,6 +11,7 @@ export default {
         "outer-space": "#637681",
         "outer-space-half": "#63768178",
         "outer-space-quarter": "#63768137",
+        "outer-space-8th": "#6376811e",
         gunmetal: "#222b30ff",
         "gunmetal-half": "#222b3078",
       },

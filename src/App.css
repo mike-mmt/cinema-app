@@ -75,24 +75,33 @@ body {
   background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 70%), linear-gradient(90deg, rgb(34, 43, 48) 44%, rgb(204, 45, 87) 100%);
 }
 
-.register-form input {
+.form input {
   border: none;
   background-color: transparent;
   border-bottom: 2px solid #fff6ff;
+  transition-duration: 150ms;
 }
-.register-form input:focus {
+.form input:focus {
   outline: none;
+  border-bottom-color: #cc2d57;
 }
-.register-form input :focus ~ label,
-.register-form input :valid ~ label {
-  transform: translateY(-1.5em);
-  font-size: 0.8em;
-}
-.register-form label {
+.form label {
   pointer-events: none;
   bottom: 10px;
   font-size: 16px;
   transition: all 0.3s ease;
+}
+
+.form-button {
+  border: none;
+  border-bottom: 2px solid #fff6ff;
+  transition-duration: 150ms;
+}
+.form-button:hover {
+  color: #cc2d57;
+}
+.form-button:focus {
+  outline: none;
 }
 
 .formikError {

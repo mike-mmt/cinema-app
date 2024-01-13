@@ -3,8 +3,9 @@ import * as Yup from "yup";
 import axios from "axios";
 import { setToken } from "../../utils/token";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { LoginContext } from "../../contexts/LoginContext";
+import { AdminContext } from "../../contexts/AdminContext";
 
 interface valuesType {
   email: string;
@@ -12,8 +13,9 @@ interface valuesType {
 }
 
 export default function LoginForm() {
-  // const [responseOutput, setResponseOutput] = useState("");
-  const loginContext = useContext(LoginContext)
+  const [responseOutput, setResponseOutput] = useState("");
+  const loginContext = useContext(LoginContext);
+  const adminContext = useContext(AdminContext);
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -22,9 +24,9 @@ export default function LoginForm() {
       password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().email("Not a valid email").required("Required"),
+      email: Yup.string().email("Not a valid email").required("Wymagane"),
       password: Yup.string()
-        .required("Required")
+        .required("Wymagane")
         .max(128, "Maksymalnie 128 znaków"),
     }),
     onSubmit: (values) => {
@@ -41,49 +43,43 @@ export default function LoginForm() {
         import.meta.env.VITE_BACKEND_URL + "/login",
         values
       );
-        if (response.status === 200 && response.data.token) {
-          setToken(response.data.token)
-          loginContext?.setLoggedIn(true)
-          // setTimeout(() => {
-          navigate('/repertoire')
-            
-          // }, 200);
-        }
-        
+      if (response.status === 200 && response.data.token) {
+        setToken(response.data.token, response.data.isAdmin || false);
+        loginContext?.setLoggedIn(true);
+        adminContext?.setIsAdmin(response.data.isAdmin || false);
+        // setTimeout(() => {
+        navigate("/repertoire");
+
+        // }, 200);
+      }
+
       console.log(response.status, response.data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log(error.response);
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          setResponseOutput(`Błąd: Niepoprawne dane`);
+        } else if (error.request) {
+          console.log(error.request);
+          setResponseOutput("Błąd: Brak odpowiedzi serwera.");
+        } else {
+          console.log("Error", error.message);
+          setResponseOutput("Nieoczekiwany błąd");
+        }
+      } else {
+        // handle non-axios errors here
+        console.log("Error", error);
+        setResponseOutput(`Error: ${error}`);
       }
-      //   if (response.status === 200) {
-      //     setResponseOutput("Konto utworzone.");
-      //   }
-      // } catch (error) {
-      //   if (axios.isAxiosError(error)) {
-      //     if (error.response) {
-      //       console.log(error.response.data);
-      //       console.log(error.response.status);
-      //       console.log(error.response.headers);
-      //       setResponseOutput(`Błąd: Niepoprawne dane`);
-      //     } else if (error.request) {
-      //       console.log(error.request);
-      //       setResponseOutput("Błąd: Brak odpowiedzi serwera.");
-      //     } else {
-      //       console.log("Error", error.message);
-      //       setResponseOutput("Nieoczekiwany błąd");
-      //     }
-      //   } else {
-      //     // handle non-axios errors here
-      //     console.log("Error", error);
-      //     setResponseOutput(`Error: ${error}`);
-      //   }
     }
   }
 
   return (
     <div className="flex flex-col items-center gap-16 max-h-fit w-full">
       <form
-        className="register-form flex gap-8 w-fit mt-8 ml-4"
+        className="form flex gap-8 w-fit mt-8 ml-4"
         onSubmit={formik.handleSubmit}
       >
         <div className="input-field flex flex-col">
@@ -107,14 +103,14 @@ export default function LoginForm() {
           ) : null}
         </div>
       </form>
-      <button className="" onClick={formik.submitForm}>
+      <button className="form-button w-fit" onClick={formik.submitForm}>
         Zaloguj się
       </button>
-      {/* <div className="response-output-wrapper self-center flex flex-grow flex-col gap-10 h-full justify-around items-center align-center w-2/5">
+      <div className="response-output-wrapper self-center flex flex-grow flex-col gap-10 h-full justify-around items-center align-center w-2/5">
         <div className="p-5 min-w-8 min-h-4 rounded-md h-fit text-lg text-magnolia">
           {responseOutput !== "" && <p>{responseOutput}</p>}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }

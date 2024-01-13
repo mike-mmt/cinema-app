@@ -22,15 +22,17 @@ export default function RegisterForm() {
       password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().email("Not a valid email").required("Required"),
+      email: Yup.string()
+        .email("Niepoprawny format e-mail")
+        .required("Wymagane"),
       firstName: Yup.string()
-        .required("Required")
+        .required("Wymagane")
         .max(32, "Maksymalnie 32 znaki"),
       lastName: Yup.string()
-        .required("Required")
+        .required("Wymagane")
         .max(32, "Maksymalnie 32 znaki"),
       password: Yup.string()
-        .required("Required")
+        .required("Wymagane")
         .max(128, "Maksymalnie 128 znaków"),
     }),
     onSubmit: (values: valuesType) => {
@@ -56,7 +58,9 @@ export default function RegisterForm() {
           console.log(error.response.data);
           console.log(error.response.status);
           console.log(error.response.headers);
-          setResponseOutput(`Błąd: Niepoprawne dane`);
+          setResponseOutput(
+            `Błąd: Konto o podanym adresie e-mail już istnieje.`
+          );
         } else if (error.request) {
           console.log(error.request);
           setResponseOutput("Błąd: Brak odpowiedzi serwera.");
@@ -75,7 +79,7 @@ export default function RegisterForm() {
   return (
     <div className="flex flex-row justify-between max-h-fit">
       <form
-        className="register-form flex flex-col gap-2 w-2/5 mt-8 ml-4"
+        className="form flex flex-col gap-2 w-2/5 mt-8 ml-4"
         onSubmit={formik.handleSubmit}
       >
         <label className="" htmlFor="email">
@@ -112,7 +116,7 @@ export default function RegisterForm() {
         {formik.touched.password && formik.errors.password ? (
           <div className="formikError">{formik.errors.password}</div>
         ) : null}
-        <button className="mt-4" type="submit">
+        <button className="form-button mt-4 w-fit self-center" type="submit">
           Utwórz konto
         </button>
       </form>
