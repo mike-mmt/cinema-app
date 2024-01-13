@@ -79,7 +79,7 @@ router.get("/:movieId", verifyJWT, async (req, res, next) => {
 });
 
 router.post(
-  "/add",
+  "/",
   [verifyJWT, verifyAdmin, uploadSingle], // middleware
   async (req, res, next) => {
     try {

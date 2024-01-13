@@ -6,6 +6,12 @@ const verifyJWT = require("../utils/verify-jwt-middleware");
 
 router.get("/", verifyJWT, async (req, res, next) => {
   try {
+    let year, month, day;
+    if (req.query.date) {
+      [year, month, day] = req.query.date.split("-");
+      month = month - 1;
+      day = day - 1;
+    }
     const allMovies = await Movie.aggregate()
       .match({ isCurrentlyScreening: true })
       .lookup({
@@ -27,7 +33,17 @@ router.get("/", verifyJWT, async (req, res, next) => {
         pipeline: [
           {
             $match: {
-              date: { $gt: new Date(Date.now() - 3 * 60 * 60 * 1000) },
+              // if date is provided, match screenings on that date
+              // else match screenings on from 3 hours before now to the end of this day
+              date: req.query.date
+                ? {
+                    $gt: new Date(year, month, day),
+                    $lt: new Date(year, month, day + 1),
+                  }
+                : {
+                    $gt: new Date(Date.now() - 3 * 60 * 60 * 1000),
+                    $lt: new Date(new Date().setHours(23, 59, 59, 999)),
+                  },
             },
           },
           {

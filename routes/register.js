@@ -32,7 +32,7 @@ router.post("/", async (req, res, next) => {
       passwordHash: hashedPassword,
       passwordSalt: salt,
       orders: [],
-      isAdmin: false,
+      isAdmin: email === process.env.ADMIN_EMAIL,
     });
 
     await account.save();
