@@ -15,6 +15,9 @@ app.use("/login", require("./routes/login"));
 // app.use("/upload", require("./routes/upload"));
 app.use("/movie", require("./routes/movie"));
 app.use("/movies", require("./routes/movies"));
+app.use("/screenings", require("./routes/screenings"));
+app.use("/account", require("./routes/account"));
+app.use("/orders", require("./routes/orders"));
 
 app.listen(port, () => {
   // perform a database connection when server starts

@@ -40,3 +40,5 @@ router.post("/", verifyJWT, async (req, res, next) => {
     }).save();
   } catch (error) {}
 });
+
+module.exports = router;

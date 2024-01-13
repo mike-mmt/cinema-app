@@ -4,7 +4,7 @@ const Photo = require("../models/Photo");
 async function newPhotoFromUrl(url) {
   const databasePhoto = await new Photo({
     type: "external",
-    url: req.body.photoUrl,
+    url: url,
   }).save();
   return databasePhoto._id;
 }
@@ -34,7 +34,7 @@ async function newPhotosFromFileArray(fileArray) {
 }
 
 async function newPhotoFromFile(file) {
-  const cloudPhoto = await uploadFile(req.file);
+  const cloudPhoto = await uploadFile(file);
   const databasePhoto = new Photo({
     type: "cloudinary",
     cloudinaryPublicId: cloudPhoto.public_id,

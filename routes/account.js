@@ -19,3 +19,5 @@ router.get("/", verifyJWT, async (req, res, next) => {
     next(error);
   }
 });
+
+module.exports = router;

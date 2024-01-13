@@ -31,7 +31,7 @@ router.get("/", verifyJWT, async (req, res, next) => {
             },
           },
           {
-            $project: { _id: 0, movieId: 0 },
+            $project: { movieId: 0 },
           },
         ],
         as: "screenings",
