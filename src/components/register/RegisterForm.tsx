@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useState } from "react";
-import LoginButton from "../navbar/LoginButton";
+import LinkButton from "../LinkButton";
 
 interface valuesType {
   email: string;
@@ -42,8 +42,7 @@ export default function RegisterForm() {
   async function sendRegisterData(values: valuesType) {
     try {
       const response = await axios.post(
-        //import.meta.env.BACKEND_URL
-        "http://localhost:5000" + "/register",
+        import.meta.env.VITE_BACKEND_URL + "/register",
         values
       );
       console.log(response.status, response.data);
@@ -121,11 +120,11 @@ export default function RegisterForm() {
         <div className="p-5 min-w-8 min-h-4 rounded-md h-fit text-lg text-magnolia">
           {responseOutput !== "" && <p>{responseOutput}</p>}
         </div>
-        <LoginButton
+        <LinkButton
           link="/login"
           text="Zaloguj się"
           styles="bg-outer-space-quarter border border-magnolia text-lg min-w-40 min-h-14"
-        ></LoginButton>
+        ></LinkButton>
       </div>
     </div>
   );

@@ -3,6 +3,8 @@ import * as Yup from "yup";
 import axios from "axios";
 import { setToken } from "../../utils/token";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { LoginContext } from "../../contexts/LoginContext";
 
 interface valuesType {
   email: string;
@@ -11,6 +13,7 @@ interface valuesType {
 
 export default function LoginForm() {
   // const [responseOutput, setResponseOutput] = useState("");
+  const loginContext = useContext(LoginContext)
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -35,13 +38,16 @@ export default function LoginForm() {
       console.log(values);
 
       const response = await axios.post(
-        //import.meta.env.BACKEND_URL
-        "http://localhost:5000" + "/login",
+        import.meta.env.VITE_BACKEND_URL + "/login",
         values
       );
         if (response.status === 200 && response.data.token) {
           setToken(response.data.token)
+          loginContext?.setLoggedIn(true)
+          // setTimeout(() => {
           navigate('/repertoire')
+            
+          // }, 200);
         }
         
       console.log(response.status, response.data);

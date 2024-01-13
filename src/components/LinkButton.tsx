@@ -5,7 +5,7 @@ type Props = {
   link: string;
   text: string;
 };
-export default function LoginButton({ styles, link, text }: Props) {
+export default function LinkButton({ styles, link, text }: Props) {
   return (
     <Link
       to={link}

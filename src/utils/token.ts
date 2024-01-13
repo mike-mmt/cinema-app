@@ -6,11 +6,11 @@ export function setToken(token:string) {
     axios.defaults.headers.common["Authorization"] = token;
 }
 
-export function getTokenIfExists() {
+export function getTokenIfExists(setLoggedIn: Function) {
     const cookieToken = getCookie("token");
     if (cookieToken) {
         axios.defaults.headers.common["Authorization"] = cookieToken;
-
+        setLoggedIn(true)
     }
 }
 

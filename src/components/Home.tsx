@@ -1,7 +1,12 @@
+import { useContext } from "react";
 import GradientBackground from "./GradientBackground";
-import LoginButton from "./navbar/LoginButton";
+import LinkButton from "./LinkButton";
+import { LoginContext } from "../contexts/LoginContext";
+// import { Link } from "react-router-dom";
 
 export default function Home() {
+  const { loggedIn } = useContext(LoginContext) || {};
+  
   return (
     // <div className="bg-black">
     <div className="main-home flex justify-center w-full h-screen">
@@ -12,16 +17,19 @@ export default function Home() {
           <p>Jedyne w swoim rodzaju.</p>
         </div>
         <div className="flex gap-10 mt-20 justify-between items-center font-bold tracking-wider">
-          <LoginButton
+          {loggedIn 
+          ? <><LinkButton link="/repertoire" text="Repertuar" styles="min-h-20 min-w-48 text-xl bg-outer-space-half" /></> 
+          : <><LinkButton
             link="/login"
             text="Zaloguj się"
             styles="min-h-16 min-w-44 text-xl"
           />
-          <LoginButton
+          <LinkButton
             link="/register"
             text="Zarejestruj się"
             styles="min-h-16 min-w-44 text-xl"
-          />
+          /></>}
+          
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Logo from "./navbar/Logo";
-import LoginButton from "./navbar/LoginButton";
+import LinkButton from "./LinkButton";
 import { useContext } from "react";
 import { LoginContext } from "../contexts/LoginContext";
 
@@ -15,10 +15,10 @@ export default function NavigationBar() {
           Repertuar
         </Link>
       </div>
-      {loginContext?.loginState.isLoggedIn ? null : ( // null bedzie przyciskiem "konto"
+      {loginContext?.loggedIn ? null : ( // null bedzie przyciskiem "konto"
         <div className="m-6 flex items-center gap-6 font-medium tracking-wide">
-          <LoginButton link="/login" text="Zaloguj się" />
-          <LoginButton link="/register" text="Utwórz konto" />
+          <LinkButton link="/login" text="Zaloguj się" />
+          <LinkButton link="/register" text="Utwórz konto" />
         </div>
       )}
     </div>
