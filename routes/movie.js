@@ -24,12 +24,18 @@ const { default: mongoose } = require("mongoose");
 
 router.get("/:movieId", verifyJWT, async (req, res, next) => {
   try {
-    let year, month, day;
-    if (req.query.date) {
-      [year, month, day] = req.query.date.split("-");
-      month = month - 1;
-      day = day - 1;
-    }
+    const datePipelineMatch =
+      req.query.from || req.query.to
+        ? {
+            $match: {
+              date: {
+                ...(req.query.from && { $gt: new Date(req.query.from) }),
+                ...(req.query.to && { $lt: new Date(req.query.to) }),
+              },
+            },
+          }
+        : {};
+
     const movieId = req.params.movieId;
     const movie = await Movie.aggregate()
       .match({ _id: new mongoose.Types.ObjectId(movieId) })
@@ -50,19 +56,7 @@ router.get("/:movieId", verifyJWT, async (req, res, next) => {
         localField: "_id",
         foreignField: "movieId",
         pipeline: [
-          {
-            $match: {
-              date: req.query.date
-                ? {
-                    $gt: new Date(year, month, day),
-                    $lt: new Date(year, month, day + 1),
-                  }
-                : {
-                    $gt: new Date(Date.now() - 3 * 60 * 60 * 1000),
-                    $lt: new Date(new Date().setHours(23, 59, 59, 999)),
-                  },
-            },
-          },
+          datePipelineMatch,
           {
             $project: { _id: 0, movieId: 0 },
           },
