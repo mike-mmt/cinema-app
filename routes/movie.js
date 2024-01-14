@@ -20,12 +20,19 @@ const {
   uploadFields,
 } = require("../utils/multer-middleware");
 const verifyAdmin = require("../utils/verify-admin");
+const { default: mongoose } = require("mongoose");
 
 router.get("/:movieId", verifyJWT, async (req, res, next) => {
   try {
+    let year, month, day;
+    if (req.query.date) {
+      [year, month, day] = req.query.date.split("-");
+      month = month - 1;
+      day = day - 1;
+    }
     const movieId = req.params.movieId;
     const movie = await Movie.aggregate()
-      .match({ _id: movieId })
+      .match({ _id: new mongoose.Types.ObjectId(movieId) })
       .lookup({
         from: "photos",
         localField: "mainPhotoId",
@@ -45,7 +52,15 @@ router.get("/:movieId", verifyJWT, async (req, res, next) => {
         pipeline: [
           {
             $match: {
-              date: { $gt: new Date(Date.now() - 3 * 60 * 60 * 1000) },
+              date: req.query.date
+                ? {
+                    $gt: new Date(year, month, day),
+                    $lt: new Date(year, month, day + 1),
+                  }
+                : {
+                    $gt: new Date(Date.now() - 3 * 60 * 60 * 1000),
+                    $lt: new Date(new Date().setHours(23, 59, 59, 999)),
+                  },
             },
           },
           {
@@ -71,8 +86,7 @@ router.get("/:movieId", verifyJWT, async (req, res, next) => {
         },
       })
       .exec();
-
-    res.status(200).json(movie);
+    res.status(200).json(movie[0]);
   } catch (error) {
     next(error);
   }

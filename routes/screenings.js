@@ -11,13 +11,31 @@ const verifyAdmin = require("../utils/verify-admin");
 
 router.get("/", verifyJWT, async (req, res, next) => {
   try {
+    let year, month, day;
+    if (req.query.date) {
+      [year, month, day] = req.query.date.split("-");
+      month = month - 1;
+      day = day - 1;
+    }
     const threeHoursBefore = new Date();
     threeHoursBefore.setHours(threeHoursBefore.getHours() - 3); // -3hrs to show ongoing screenings as well
 
-    const screenings = await Screening.find()
-      .where("date")
-      .gt(threeHoursBefore)
-      .exec();
+    let query = Screening.find();
+    if (req.query.movieId) {
+      query = query.where("movieId").equals(req.query.movieId);
+    }
+    if (req.query.date) {
+      query = query
+        .where("date")
+        .gt(new Date(year, month, day))
+        .lt(new Date(year, month, day + 1));
+    } else {
+      query = query
+        .where("date")
+        .gt(threeHoursBefore)
+        .lt(new Date(new Date().setHours(23, 59, 59, 999)));
+    }
+    const screenings = await query.exec();
 
     return res.status(200).json(screenings);
   } catch (error) {

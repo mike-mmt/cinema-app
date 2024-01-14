@@ -2,11 +2,12 @@ const express = require("express");
 const router = express.Router();
 const verifyJWT = require("../utils/verify-jwt-middleware");
 const Account = require("../models/Account");
+const { default: mongoose } = require("mongoose");
 
 router.get("/", verifyJWT, async (req, res, next) => {
   try {
     const account = Account.aggregate()
-      .match({ _id: req.user.id })
+      .match({ _id: new mongoose.Types.ObjectId(req.user.id) })
       .lookup({
         from: "orders",
         localField: "orders",
