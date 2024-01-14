@@ -19,14 +19,14 @@ export default function Movie() {
 	const [showAddScreening, setShowAddScreening] = useState(false);
 	const adminContext = useContext(AdminContext);
 
-	const handleNewScreenings = useCallback(async () => {
+	async function handleFetchScreenings() {
 		const response = await fetchScreenings(
 			new Date(startDate.setHours(0, 0, 0, 0)),
 			new Date(startDate.setHours(23, 59, 59, 999)),
 			movieId,
 		);
 		setScreenings(response);
-	}, [movieId, startDate]);
+	}
 
 	useEffect(() => {
 		axios
@@ -45,9 +45,9 @@ export default function Movie() {
 	useEffect(() => {
 		// fetches screenings when date changes or whena new screening is added
 		if (!showAddScreening) {
-			handleNewScreenings();
+			handleFetchScreenings();
 		}
-	}, [handleNewScreenings, showAddScreening, startDate]);
+	}, [showAddScreening, startDate]);
 
 	return (
 		<StaticGradientBg>

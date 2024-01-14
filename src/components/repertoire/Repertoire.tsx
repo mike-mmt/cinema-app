@@ -49,7 +49,6 @@ export default function Repertoire() {
 	>(reducer, []);
 	const adminContext = useContext(AdminContext);
 	const [startDate, setStartDate] = useState(new Date());
-	const datePickerRef = useRef<DatePicker | null>(null);
 
 	useEffect(() => {
 		axios
@@ -67,11 +66,21 @@ export default function Repertoire() {
 			new Date(startDate.setHours(0, 0, 0, 0)),
 			new Date(startDate.setHours(23, 59, 59, 999)),
 		);
+		console.log(
+			response.map((screening: ScreeningType) =>
+				screening.date.toString(),
+			),
+		);
+
 		dispatch({
 			type: 'setScreenings',
 			payload: response,
 		});
 	};
+
+	useEffect(() => {
+		handleFetchScreenings();
+	}, [startDate]);
 
 	return (
 		<StaticGradientBg styles='flex justify-center bg-fixed'>
@@ -88,12 +97,9 @@ export default function Repertoire() {
 					Repertuar
 				</h1>
 				<DatePicker
-					ref={datePickerRef}
 					selected={startDate}
 					onChange={(date: Date) => {
-						setStartDate(date);
-						handleFetchScreenings();
-						// handleNewScreenings(); // -> not needed, useEffect will handle it
+						setStartDate(date); //useEffect will handle fetching screenings
 					}}
 					className='cursor-pointer bg-transparent py-2 border-b-2 border-magnolia text-center text-xl font-semibold focus:outline focus:outline-magnolia'
 					dateFormat='dd.MM'
