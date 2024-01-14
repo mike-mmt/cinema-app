@@ -11,135 +11,139 @@ $outer-space-8th: #6376811e;
 $gunmetal-half: #222b3078;
 
 body {
-  background-color: $black;
-  color: $magnolia;
-  margin: 0;
-  padding: 0;
-  font-family: "Josefin Sans", sans-serif;
-  font-weight: 500;
-  // background-color: #242424;
-  // background: linear-gradient(0deg, $black, $rosered, $black);
-  // background-size: 400% 400%;
-  // animation: gradient 15s ease infinite;
-  height: 100vh;
+	background-color: $black;
+	color: $magnolia;
+	margin: 0;
+	padding: 0;
+	font-family: 'Josefin Sans', sans-serif;
+	font-weight: 500;
+	// background-color: #242424;
+	// background: linear-gradient(0deg, $black, $rosered, $black);
+	// background-size: 400% 400%;
+	// animation: gradient 15s ease infinite;
+	height: 100vh;
 }
 .main-home {
-  position: relative;
-  width: 100%;
+	position: relative;
+	width: 100%;
 }
 .black-background {
-  background-color: $black;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vw;
+	background-color: $black;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vw;
 }
 
 $anim-duration: 15s;
 .gradient-first-layer {
-  opacity: 0;
-  background: linear-gradient(0deg, $black, $gunmetal);
-  animation-name: fade-in-first-layer;
-  // animation-timing-function: ease-in-out;
-  // animation-iteration-count: 1;
-  animation-delay: calc($anim-duration/2);
-  animation-duration: 1ms;
-  animation-fill-mode: forwards;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  min-height: 20em;
+	opacity: 0;
+	background: linear-gradient(0deg, $black, $gunmetal);
+	animation-name: fade-in-first-layer;
+	// animation-timing-function: ease-in-out;
+	// animation-iteration-count: 1;
+	animation-delay: calc($anim-duration/2);
+	animation-duration: 1ms;
+	animation-fill-mode: forwards;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	min-height: 20em;
 }
 .gradient-loop {
-  opacity: 0;
-  background: linear-gradient(0deg, $black, $rosered);
-  animation-name: fade-loop;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  animation-delay: 1s;
-  animation-duration: $anim-duration;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  min-height: 20em;
+	opacity: 0;
+	background: linear-gradient(0deg, $black, $rosered);
+	animation-name: fade-loop;
+	animation-timing-function: ease-in-out;
+	animation-iteration-count: infinite;
+	animation-delay: 1s;
+	animation-duration: $anim-duration;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	min-height: 20em;
 }
 
 @keyframes fade-in-first-layer {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 @keyframes fade-loop {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+	0% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
 }
 
 .background-all {
-  background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 70%),
-    linear-gradient(90deg, rgba(34, 43, 48, 1) 44%, rgba(204, 45, 87, 1) 100%);
+	background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 70%),
+		linear-gradient(
+			90deg,
+			rgba(34, 43, 48, 1) 44%,
+			rgba(204, 45, 87, 1) 100%
+		);
 }
 
 .form {
-  input {
-    border: none;
-    background-color: transparent;
-    border-bottom: 2px solid $magnolia;
-    transition-duration: 150ms;
-    &:focus {
-      outline: none;
-      border-bottom-color: $rosered;
-    }
-  }
-  label {
-    // position: absolute;
-    pointer-events: none;
-    bottom: 10px;
-    font-size: 16px;
-    transition: all 0.3s ease;
-  }
+	input {
+		border: none;
+		background-color: transparent;
+		border-bottom: 2px solid $magnolia;
+		transition-duration: 150ms;
+		&:focus {
+			outline: none;
+			border-bottom-color: $rosered;
+		}
+	}
+	label {
+		// position: absolute;
+		pointer-events: none;
+		bottom: 10px;
+		font-size: 16px;
+		transition: all 0.3s ease;
+	}
 }
 .form-button {
-  border: none;
-  border-bottom: 2px solid $magnolia;
-  transition-duration: 150ms;
-  &:hover {
-    color: $rosered;
-  }
-  &:focus {
-    color: $rosered;
-    outline: none;
-  }
+	border: none;
+	border-bottom: 2px solid $magnolia;
+	transition-duration: 150ms;
+	&:hover {
+		color: $rosered;
+	}
+	&:focus {
+		color: $rosered;
+		outline: none;
+	}
 }
 .formikError {
-  color: $crimson;
+	color: $crimson;
 }
 // .react-datepicker__input-time-container {
-//   input {
-//     background-color: $gunmetal-half;
-//     font-size: 1.25em;
-//     padding: 0.25em;
-//     color: $magnolia;
-//   }
+// 	input {
+// 		background-color: $gunmetal-half;
+// 		font-size: 1.25em;
+// 		padding: 0.25em;
+// 		color: $magnolia;
+// 	}
 // }
 // .date-picker-wrapper {
-//   input {
-//     background-color: $gunmetal-half;
-//     color: $magnolia;
-//   }
+// 	input {
+// 		background-color: $gunmetal-half;
+// 		color: $magnolia;
+// 	}
 // }
 
 // .movies-grid {
