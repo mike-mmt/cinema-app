@@ -5,6 +5,10 @@ $rosered: #cc2d57;
 $magnolia: #fff6ffff;
 $outer-space: #637681; //#45555eff;
 $gunmetal: #222b30ff;
+$outer-space-half: #63768178;
+$outer-space-quarter: #63768137;
+$outer-space-8th: #6376811e;
+$gunmetal-half: #222b3078;
 
 body {
   background-color: $black;
@@ -116,12 +120,27 @@ $anim-duration: 15s;
     color: $rosered;
   }
   &:focus {
+    color: $rosered;
     outline: none;
   }
 }
 .formikError {
   color: $crimson;
 }
+// .react-datepicker__input-time-container {
+//   input {
+//     background-color: $gunmetal-half;
+//     font-size: 1.25em;
+//     padding: 0.25em;
+//     color: $magnolia;
+//   }
+// }
+// .date-picker-wrapper {
+//   input {
+//     background-color: $gunmetal-half;
+//     color: $magnolia;
+//   }
+// }
 
 // .movies-grid {
 //   display: grid;

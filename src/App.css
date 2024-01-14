@@ -101,6 +101,7 @@ body {
   color: #cc2d57;
 }
 .form-button:focus {
+  color: #cc2d57;
   outline: none;
 }
 
