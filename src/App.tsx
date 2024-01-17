@@ -1,7 +1,7 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
-import NavigationBar from './components/NavigationBar';
+import NavigationBar from './components/navbar/NavigationBar';
 import Repertoire from './components/repertoire/Repertoire';
 import { LoginContext } from './contexts/LoginContext';
 import { useEffect, useState } from 'react';
