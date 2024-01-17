@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import FormField from './FormField';
 import axios from 'axios';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 
 // type Props = {};
 export interface valuesType {
@@ -57,6 +57,8 @@ export default function AddMovieForm() {
 			formData.append('director', values.director);
 			formData.append('genres', JSON.stringify(genres));
 			formData.append('actors', JSON.stringify(actors));
+			console.log(values.image);
+
 			if (values.image) {
 				formData.append('image', values.image);
 			}
@@ -77,6 +79,7 @@ export default function AddMovieForm() {
 
 			if (response.status === 201) {
 				setResponseOutput('Film dodany.');
+				formik.resetForm();
 			}
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
@@ -158,21 +161,19 @@ export default function AddMovieForm() {
 					type='text'
 					formik={formik}
 				/>
-				<FormField
-					field='image'
-					label='Zdjęcie'
+				<input
+					id='image'
+					name='image'
 					type='file'
-					attrs={{
-						onChange: (event: React.FormEvent) => {
-							formik.setFieldValue(
-								'file',
-								(event.currentTarget as HTMLInputElement)
-									.files?.[0] || null,
-							);
-							formik.setFieldValue('photoUrl', '');
-						},
+					accept='image/*'
+					onChange={(event: FormEvent) => {
+						formik.setFieldValue(
+							'image',
+							(event.currentTarget as HTMLInputElement)
+								.files?.[0] || null,
+						);
+						formik.setFieldValue('photoUrl', '');
 					}}
-					formik={formik}
 				/>
 			</div>
 			<button className='form-button mt-8 max-w-fit' type='submit'>

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useContext, useEffect, useReducer, useRef, useState } from 'react';
+import { useContext, useEffect, useReducer, useState } from 'react';
 import MovieCard from './MovieCard';
 import { AdminContext } from '../../contexts/AdminContext';
 import LinkButton from '../LinkButton';
@@ -18,6 +18,7 @@ export interface MovieType {
 	actors: string[];
 	screenings: ScreeningType[];
 	photoUrl: string;
+	trailerUrl: string;
 	galleryPhotoUrls: string[];
 }
 interface ActionType {
@@ -54,10 +55,16 @@ export default function Repertoire() {
 		axios
 			.get(import.meta.env.VITE_BACKEND_URL + '/movies')
 			.then((response) => {
-				dispatch({
+				console.log(response);
+
+				const dispatchBody = {
 					type: 'set',
-					payload: response.data,
-				});
+					payload:
+						response.status === 200
+							? response.data
+							: ([] as MovieType[]),
+				};
+				dispatch(dispatchBody);
 			});
 	}, []);
 
@@ -66,16 +73,19 @@ export default function Repertoire() {
 			new Date(startDate.setHours(0, 0, 0, 0)),
 			new Date(startDate.setHours(23, 59, 59, 999)),
 		);
-		console.log(
-			response.map((screening: ScreeningType) =>
-				screening.date.toString(),
-			),
-		);
-
-		dispatch({
+		// console.log(
+		// 	response.map((screening: ScreeningType) =>
+		// 		screening.date.toString(),
+		// 	),
+		// );
+		const dispatchBody = {
 			type: 'setScreenings',
-			payload: response,
-		});
+			payload:
+				response?.status === 200
+					? response.data
+					: ([] as ScreeningType[]),
+		};
+		dispatch(dispatchBody);
 	};
 
 	useEffect(() => {

@@ -17,7 +17,7 @@ export async function fetchScreenings(
 			},
 		);
 		//   console.log(new Date(response.data[0].date).toLocaleString());
-		return response.data;
+		return response;
 	} catch (error) {
 		console.log(error);
 	}
