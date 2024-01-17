@@ -70,6 +70,7 @@ router.get("/:movieId", verifyJWT, async (req, res, next) => {
         director: 1,
         actors: 1,
         screenings: 1,
+        trailerUrl: 1,
         photoUrl: { $arrayElemAt: ["$photoUrl.url", 0] },
         galleryPhotoUrls: {
           $map: {
@@ -88,7 +89,7 @@ router.get("/:movieId", verifyJWT, async (req, res, next) => {
 
 router.post(
   "/",
-  [verifyJWT, verifyAdmin, uploadSingle], // middleware
+  [uploadSingle, verifyJWT, verifyAdmin], // middleware
   async (req, res, next) => {
     try {
       console.log(req.body);
@@ -96,6 +97,8 @@ router.post(
       req.body.actors = JSON.parse(req.body.actors);
       req.body.year = parseInt(req.body.year);
       const validation = validateMovieData(req.body);
+      console.log(req.file);
+
       if ((!req.file && !req.body.photoUrl) || !validation) {
         return res.status(400).json({ error: "invalid form data" });
       }
@@ -106,6 +109,7 @@ router.post(
       } else if (req.file) {
         photo = await newPhotoFromFile(req.file);
       }
+      console.log(photo);
 
       const newMovie = new Movie({
         ...req.body,
@@ -118,6 +122,7 @@ router.post(
         .status(201)
         .json({ message: "success", createdMovie: newMovie });
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
@@ -128,6 +133,10 @@ router.delete("/:movieId", [verifyJWT, verifyAdmin], async (req, res, next) => {
     const movieId = req.params.movieId;
     const deleteQuery = await Movie.findByIdAndDelete(movieId).exec();
     console.log(deleteQuery._doc);
+    const deleteScreenings = await Screening.deleteMany()
+      .where("movieId")
+      .equals(movieId)
+      .exec();
     const deletePhotoQuery = await deletePhoto(deleteQuery._doc.mainPhotoId);
     return res.status(200).json({ message: "success", deleteQuery });
   } catch (error) {
@@ -145,6 +154,7 @@ router.patch(
         ...(req.body.title && { title: req.body.title }),
         ...(req.body.director && { director: req.body.director }),
         ...(req.body.year && { year: parseInt(req.body.year) }),
+        ...(req.body.trailerUrl && { trailerUrl: req.body.trailerUrl }),
         ...(req.body.isCurrentlyScreening && {
           isCurrentlyScreening: req.body.isCurrentlyScreening === "true",
         }),
@@ -153,17 +163,25 @@ router.patch(
       const actors = req.body.actors ? JSON.parse(req.body.actors) : [];
       const galleryPhotoIds = [];
       // photo handling
-      if (req.files.image || req.body.photoUrl) {
+      if ((req.files && req.files.image) || req.body.photoUrl) {
         newMovie.mainPhotoId = req.body.photoUrl
           ? await newPhotoFromUrl(req.body.photoUrl)
           : await newPhotoFromFile(req.file.image[0]);
       }
-      if (req.files.galleryImages) {
-        const ids = await newPhotosFromFileArray(req.files.galleryImages);
+      if (req.files && req.files.galleryImages) {
+        const ids = await newPhotosFromFileArray(
+          Array.isArray(req.files.galleryImages) // transform to array if its a single file
+            ? req.files.galleryImages
+            : [req.files.galleryImages]
+        );
         galleryPhotoIds.push(...ids);
       }
       if (req.body.galleryPhotoUrls) {
-        const ids = await newPhotosFromUrlArray(req.galleryPhotoUrls);
+        const ids = await newPhotosFromUrlArray(
+          Array.isArray(req.body.galleryPhotoUrls) // transform to array if its a single url
+            ? req.body.galleryPhotoUrls
+            : [req.body.galleryPhotoUrls]
+        );
         galleryPhotoIds.push(...ids);
       }
       // update the movie
@@ -215,7 +233,7 @@ router.delete(
   }
 );
 router.delete(
-  "/:movieId/galleryPhotoId",
+  "/:movieId/galleryPhoto",
   [verifyJWT, verifyAdmin],
   async (req, res, next) => {
     try {
@@ -225,6 +243,18 @@ router.delete(
         });
         await deletePhoto(galleryPhotoId);
         return res.status(200).json({ message: "success", update });
+      } else if (req.query.galleryPhotoUrl) {
+        const movie = await Movie.findById(req.params.movieId)
+          .populate("galleryPhotoIds")
+          .select("galleryPhotoIds")
+          .exec();
+        const photo = movie.galleryPhotoIds.find(
+          (photo) => photo.url === req.query.galleryPhotoUrl
+        )._id;
+        await deletePhoto(photo);
+        await Movie.findByIdAndUpdate(req.params.movieId, {
+          $pull: { galleryPhotoIds: photo },
+        });
       }
     } catch (error) {}
   }

@@ -12,7 +12,7 @@ async function newPhotosFromUrlArray(urlArray) {
   const databasePhotos = urlArray.map((url) => {
     return {
       type: "external",
-      url: req.body.photoUrl,
+      url: url,
     };
   });
   const insertPhotosQuery = await Photo.insertMany(databasePhotos); // insertMany doesnt run middleware!
@@ -35,7 +35,7 @@ async function newPhotosFromFileArray(fileArray) {
 
 async function newPhotoFromFile(file) {
   const cloudPhoto = await uploadFile(file);
-  const databasePhoto = new Photo({
+  const databasePhoto = await new Photo({
     type: "cloudinary",
     cloudinaryPublicId: cloudPhoto.public_id,
     url: cloudPhoto.secure_url,

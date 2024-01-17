@@ -9,7 +9,7 @@ const verifyAdmin = require("../utils/verify-admin");
 //   type: String,
 //   sound: String,
 
-router.get("/", verifyJWT, async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     // let year, month, day;
     // if (req.query.date) {
@@ -39,6 +39,15 @@ router.get("/", verifyJWT, async (req, res, next) => {
     const screenings = await query.exec();
 
     return res.status(200).json(screenings);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/:screeningId", verifyJWT, async (req, res, next) => {
+  try {
+    const screening = await Screening.findById(req.params.screeningId);
+    return res.status(200).json(screening);
   } catch (error) {
     next(error);
   }
@@ -108,6 +117,18 @@ router.post("/multiple", [verifyJWT, verifyAdmin], async (req, res, next) => {
       .status(201)
       .json({ message: "success", screenings: screeningsQuery });
   } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/:screeningId", async (req, res, next) => {
+  try {
+    const deleteQ = await Screening.findByIdAndDelete(req.params.screeningId);
+    return res
+      .status(200)
+      .json({ message: "success", deletedScreening: deleteQ._doc });
+  } catch (error) {
+    console.log(error);
     next(error);
   }
 });

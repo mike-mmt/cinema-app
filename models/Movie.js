@@ -10,6 +10,7 @@ const movieSchema = new mongoose.Schema({
     type: mongoose.SchemaTypes.ObjectId,
     ref: "Photo",
   },
+  trailerUrl: String,
   galleryPhotoIds: {
     type: [mongoose.SchemaTypes.ObjectId],
     ref: "Photo",

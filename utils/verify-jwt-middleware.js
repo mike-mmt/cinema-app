@@ -19,7 +19,7 @@ function verifyJWT(req, res, next) {
         next();
       });
     } else {
-      res.json({ message: "Incorrect token", isLoggedIn: false });
+      res.status(401).json({ message: "Incorrect token", isLoggedIn: false });
     }
   }
 }
