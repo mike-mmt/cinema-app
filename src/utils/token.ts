@@ -14,7 +14,7 @@ export function getTokenIfExists(
 	const cookieToken = getCookie('token');
 	const cookieIsAdmin = getCookie('isAdmin');
 	if (cookieToken) {
-		axios.defaults.headers.common['Authorization'] = cookieToken;
+		axios.defaults.headers.common['x-access-token'] = cookieToken;
 		setLoggedIn(true);
 		if (cookieIsAdmin === 'true') {
 			setIsAdmin(true);
@@ -26,11 +26,10 @@ export function logOut(
 	setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>,
 	setIsAdmin: React.Dispatch<React.SetStateAction<boolean>> | undefined,
 ) {
-	removeCookie('token');
-	removeCookie('isAdmin');
-	delete axios.defaults.headers.common['Authorization'];
+	console.log('logging out');
+	removeCookie('token', { path: '/' });
+	removeCookie('isAdmin', { path: '/' });
+	delete axios.defaults.headers.common['x-access-token'];
 	setLoggedIn(false);
-	if (setIsAdmin) {
-		setIsAdmin(false);
-	}
+	setIsAdmin && setIsAdmin(false);
 }

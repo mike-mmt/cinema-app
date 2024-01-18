@@ -17,7 +17,7 @@ export interface ScreeningType {
 	seats: SeatType[];
 }
 
-interface SeatType {
+export interface SeatType {
 	row: string;
 	number: number;
 	class: string;

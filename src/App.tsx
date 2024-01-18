@@ -4,40 +4,63 @@ import Home from './components/Home';
 import NavigationBar from './components/navbar/NavigationBar';
 import Repertoire from './components/repertoire/Repertoire';
 import { LoginContext } from './contexts/LoginContext';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Register from './components/register/Register';
 import Login from './components/login/Login';
 import { getTokenIfExists } from './utils/token';
 import { AdminContext } from './contexts/AdminContext';
 import AddMovie from './components/addmovie/AddMovie';
 import Movie from './components/movie/Movie';
+import Screening from './components/screening/Screening';
+import { PricesContext, PricesType } from './contexts/PricesContext';
+import axios from 'axios';
 
 function App() {
 	const [loggedIn, setLoggedIn] = useState<boolean>(false);
 	const [isAdmin, setIsAdmin] = useState<boolean>(false);
+	const prices = useRef<PricesType | undefined>(undefined);
 
 	useEffect(() => {
 		getTokenIfExists(setLoggedIn, setIsAdmin);
 	}, []);
 
+	useEffect(() => {
+		axios.get(import.meta.env.VITE_BACKEND_URL + '/prices').then((res) => {
+			if (res.status === 200) {
+				console.log(res.data);
+
+				prices.current = res.data;
+				console.log(prices.current);
+			}
+		});
+	}, []);
 	return (
 		<div className='flex flex-col'>
 			<LoginContext.Provider value={{ loggedIn, setLoggedIn }}>
 				<AdminContext.Provider value={{ isAdmin, setIsAdmin }}>
-					<NavigationBar />
-					<Routes>
-						<Route path='/' element={<Home />} />
-						<Route path='/repertoire' element={<Repertoire />} />
-						<Route path='/register' element={<Register />} />
-						<Route path='/login' element={<Login />} />
-						<Route path='/addmovie' element={<AddMovie />} />
-						<Route path='/movie/:movieId' element={<Movie />} />
+					<PricesContext.Provider value={prices}>
+						<NavigationBar />
+						<Routes>
+							<Route path='/' element={<Home />} />
+							<Route
+								path='/repertoire'
+								element={<Repertoire />}
+							/>
+							<Route path='/register' element={<Register />} />
+							<Route path='/login' element={<Login />} />
+							<Route path='/addmovie' element={<AddMovie />} />
+							<Route path='/movie/:movieId' element={<Movie />} />
+							<Route
+								path='/screening/:screeningId'
+								element={<Screening />}
+							/>
 
-						{/* <Route path="/about" element={<About />} />
+							{/* <Route path="/about" element={<About />} />
           <Route path="/events" element={<Events />} />
           <Route path="/products" element={<Products />} />
           <Route path="/contact" element={<Contact />} /> */}
-					</Routes>
+						</Routes>
+					</PricesContext.Provider>
 				</AdminContext.Provider>
 			</LoginContext.Provider>
 		</div>
