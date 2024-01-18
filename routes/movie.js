@@ -22,7 +22,7 @@ const {
 const verifyAdmin = require("../utils/verify-admin");
 const { default: mongoose } = require("mongoose");
 
-router.get("/:movieId", verifyJWT, async (req, res, next) => {
+router.get("/:movieId", async (req, res, next) => {
   try {
     const datePipelineMatch =
       req.query.from || req.query.to

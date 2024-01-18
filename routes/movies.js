@@ -4,7 +4,7 @@ const Movie = require("../models/Movie");
 const Screening = require("../models/Screening");
 const verifyJWT = require("../utils/verify-jwt-middleware");
 
-router.get("/", async (req, res, next) => {
+router.get("/", verifyJWT, async (req, res, next) => {
   try {
     let year, month, day;
     if (req.query.date) {

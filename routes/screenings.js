@@ -46,7 +46,9 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:screeningId", verifyJWT, async (req, res, next) => {
   try {
-    const screening = await Screening.findById(req.params.screeningId);
+    const screening = await Screening.findById(req.params.screeningId)
+      .populate("movieId")
+      .exec();
     return res.status(200).json(screening);
   } catch (error) {
     next(error);
