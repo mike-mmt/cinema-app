@@ -26,14 +26,23 @@ export default function RegisterForm() {
 				.email('Niepoprawny format e-mail')
 				.required('Wymagane'),
 			firstName: Yup.string()
+				.trim()
 				.required('Wymagane')
 				.max(32, 'Maksymalnie 32 znaki'),
 			lastName: Yup.string()
+				.trim()
 				.required('Wymagane')
 				.max(32, 'Maksymalnie 32 znaki'),
 			password: Yup.string()
+				.trim()
 				.required('Wymagane')
-				.max(128, 'Maksymalnie 128 znaków'),
+				.min(8, 'Minimalnie 8 znaków')
+				.max(128, 'Maksymalnie 128 znaków')
+				.matches(
+					/.*[^a-zA-Z].*/,
+					'Hasło musi zawierać cyfrę lub znak specjalny',
+				)
+				.matches(/.*[a-zA-Z].*/, 'Hasło musi zawierać literę'),
 		}),
 		onSubmit: (values: valuesType) => {
 			sendRegisterData(values);

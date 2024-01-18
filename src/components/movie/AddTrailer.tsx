@@ -20,7 +20,7 @@ export default function AddTrailer({ movieId, setShow }: Props) {
 			trailerUrl: '',
 		},
 		validationSchema: Yup.object({
-			trailerUrl: Yup.string().required(),
+			trailerUrl: Yup.string().trim().required(),
 		}),
 		onSubmit: (values: ValuesType) => {
 			sendTrailer(values);
