@@ -10,7 +10,7 @@ router.post("/", async (req, res, next) => {
     const account = await Account.findOne()
       .where("email")
       .equals(email)
-      .select("passwordHash passwordSalt isAdmin")
+      .select("passwordHash passwordSalt isAdmin _id email")
       .exec();
 
     if (account === null) {
@@ -25,13 +25,13 @@ router.post("/", async (req, res, next) => {
 
     if (validLogin) {
       const payload = {
-        id: account._id,
+        id: account._id.toString(),
         email,
       };
       jwt.sign(
         payload,
         process.env.JWT_SECRET,
-        { expiresIn: 86400 },
+        { expiresIn: "7d" },
         (err, token) => {
           if (err) return res.status(500).json({ message: err });
           return res.status(200).json({

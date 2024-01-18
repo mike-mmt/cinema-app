@@ -25,6 +25,9 @@ router.post("/", verifyJWT, async (req, res, next) => {
     if (!validSeats) {
       return res.status(400).json({ error: "seats occupied or invalid" });
     }
+    const finalPrice = req.body.seats.reduce((acc, seat) => {
+      return acc + retrievePrice(seat.class);
+    }, 0);
     const newOrder = await new Order({
       screeningId: req.body.screeningId,
       seats: req.body.seats.map((seat) => {
@@ -34,10 +37,42 @@ router.post("/", verifyJWT, async (req, res, next) => {
           class: seat.class,
         };
       }),
-      price: retrievePrice(seat.class),
+      price: finalPrice,
       paid: true, // payment api should set this
       date: req.body.date,
     }).save();
+
+    const newSeats = screening.seats.map((seat) => {
+      if (
+        req.body.seats.some(
+          (s) => s.row === seat.row && s.number === seat.number
+        )
+      ) {
+        return {
+          row: seat.row,
+          number: seat.number,
+          class: seat.class,
+          taken: true,
+        };
+      } else {
+        return {
+          row: seat.row,
+          number: seat.number,
+          class: seat.class,
+          taken: seat.taken,
+        };
+      }
+    });
+
+    const updatedScreening = await Screening.findByIdAndUpdate(
+      req.body.screeningId,
+      {
+        $set: {
+          seats: newSeats,
+        },
+      }
+    ).exec();
+    return res.status(200).json(newOrder);
   } catch (error) {}
 });
 

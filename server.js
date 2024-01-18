@@ -27,7 +27,7 @@ app.listen(port, () => {
 });
 
 async function mainDatabaseConnection() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/cinema");
+  await mongoose.connect(process.env.MONGO_URI, { dbName: "cinema" }); // "mongodb://127.0.0.1:27017/cinema"
   await setAdminAccount();
   console.log("Database connected!");
 }
