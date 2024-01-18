@@ -37,6 +37,7 @@ export default function Movie() {
 		setScreenings(
 			response?.status === 200 ? response.data : ([] as ScreeningType[]),
 		);
+		setScreeningsHaveChanged(false);
 	}
 
 	useEffect(() => {
@@ -143,6 +144,9 @@ export default function Movie() {
 									initialDate={startDate}
 									setShow={setShowAddScreening}
 									movieId={movieId}
+									setScreeningsHaveChanged={
+										setScreeningsHaveChanged
+									}
 								/>
 							)}
 						</div>

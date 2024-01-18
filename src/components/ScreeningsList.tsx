@@ -25,19 +25,19 @@ export default function ScreeningsList({
 	) => {
 		event.stopPropagation();
 		if (loginContext?.loggedIn) {
-			navigate(`/screening/${screeningId}`);
+			navigate(`/screening/${screeningId}#main`);
 		}
 	};
 
 	async function handleDelete(event: React.MouseEvent, id: string) {
 		event.stopPropagation();
-		const response = await axios.delete(
-			import.meta.env.VITE_BACKEND_URL + '/screenings/' + id,
-		);
+		axios
+			.delete(import.meta.env.VITE_BACKEND_URL + '/screenings/' + id)
+			.then(() => {
+				setScreeningsHaveChanged && setScreeningsHaveChanged(true);
+			});
 
-		setScreeningsHaveChanged && setScreeningsHaveChanged(true);
-
-		console.log(response);
+		// console.log(response);
 	}
 
 	return (

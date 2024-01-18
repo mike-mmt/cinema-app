@@ -10,9 +10,15 @@ type Props = {
 	movieId: string | undefined;
 	setShow: React.Dispatch<React.SetStateAction<boolean>>;
 	initialDate?: Date;
+	setScreeningsHaveChanged: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function AddScreening({ movieId, setShow, initialDate }: Props) {
+export default function AddScreening({
+	movieId,
+	setShow,
+	initialDate,
+	setScreeningsHaveChanged,
+}: Props) {
 	const formik = useFormik({
 		initialValues: {
 			date: initialDate || new Date(),
@@ -22,13 +28,20 @@ export default function AddScreening({ movieId, setShow, initialDate }: Props) {
 		validationSchema: Yup.object({
 			date: Yup.date().required('Wymagane'),
 		}),
-		onSubmit: (values) => {
-			axios.post(import.meta.env.VITE_BACKEND_URL + '/screenings', {
-				movieId,
-				date: values.date,
-				type: values.type,
-				sound: values.sound,
-			});
+		onSubmit: async (values) => {
+			axios
+				.post(import.meta.env.VITE_BACKEND_URL + '/screenings', {
+					movieId,
+					date: values.date,
+					type: values.type,
+					sound: values.sound,
+				})
+				.then((res) => {
+					console.log(res);
+
+					setScreeningsHaveChanged(true);
+				});
+
 			setShow(false);
 		},
 	});
