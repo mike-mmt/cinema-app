@@ -14,6 +14,8 @@ import Movie from './components/movie/Movie';
 import Screening from './components/screening/Screening';
 import { PricesContext, PricesType } from './contexts/PricesContext';
 import axios from 'axios';
+import OrderSummary from './components/ordersummary/OrderSummary';
+import Order from './components/ordersummary/Order';
 
 function App() {
 	const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -54,7 +56,11 @@ function App() {
 								path='/screening/:screeningId'
 								element={<Screening />}
 							/>
-
+							<Route
+								path='ordersummary'
+								element={<OrderSummary />}
+							/>
+							<Route path='/order' element={<Order />} />
 							{/* <Route path="/about" element={<About />} />
           <Route path="/events" element={<Events />} />
           <Route path="/products" element={<Products />} />

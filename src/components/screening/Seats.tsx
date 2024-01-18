@@ -3,7 +3,8 @@ import { SeatType } from '../../utils/screeningsUtils';
 import { PopulatedScreeningType } from './Screening';
 import Seat from './Seat';
 import { PricesContext } from '../../contexts/PricesContext';
-import LinkButton from '../LinkButton';
+import { useNavigate } from 'react-router-dom';
+import { seatColors } from '../../utils/seatColors';
 
 type Props = {
 	screening: PopulatedScreeningType;
@@ -13,6 +14,7 @@ type Props = {
 export default function Seats({ screening, colsAmount }: Props) {
 	const prices = useContext(PricesContext);
 	const [selectedSeats, setSelectedSeats] = useState<SeatType[]>([]);
+	const navigate = useNavigate();
 
 	const handleSelectSeat = (e: React.MouseEvent, seat: SeatType) => {
 		e.stopPropagation();
@@ -28,16 +30,6 @@ export default function Seats({ screening, colsAmount }: Props) {
 	const getSeatRow = (seat: SeatType) => {
 		const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
 		return alphabet.indexOf(seat.row.toLowerCase()) + 1;
-	};
-
-	const seatColors = {
-		taken: ' bg-gunmetal',
-		normal: ' bg-magnolia',
-		normalhover: ' hover:bg-gray-400',
-		vip: ' bg-rosered',
-		viphover: ' hover:bg-rose-300',
-		selected: ' bg-indigo-500',
-		selectedhover: ' hover:bg-indigo-600',
 	};
 
 	const getSeatColor = (seat: SeatType) => {
@@ -102,10 +94,12 @@ export default function Seats({ screening, colsAmount }: Props) {
 			</div>
 
 			<div className='flex w-11/12 justify-between items-center mt-4'>
-				<LinkButton
-					link={`/movie/${screening.movieId._id}`}
-					text='Anuluj'
-				/>
+				<button
+					className='bg-outer-space text-magnolia min-h-10 min-w-32 rounded flex justify-center items-center align-middle duration-150 active:bg-transparent active:border-2 active:border-magnolia'
+					onClick={() => navigate(-1)}
+				>
+					Anuluj
+				</button>
 				{selectedSeats.length !== 0 && (
 					<div className='selected flex gap-2 items-center'>
 						<p>Wybrane fotele: </p>
@@ -125,7 +119,19 @@ export default function Seats({ screening, colsAmount }: Props) {
 						<p>Suma: {calculateOrderSum()} zł</p>
 					</div>
 				)}
-				<LinkButton link={`/order`} text='Dalej' />
+				<button
+					className='bg-rosered text-magnolia min-h-10 min-w-32 rounded flex justify-center items-center align-middle duration-150 active:bg-transparent active:border-2 active:border-magnolia'
+					onClick={() =>
+						navigate('/ordersummary', {
+							state: {
+								screening: screening,
+								selectedSeats: selectedSeats,
+							},
+						})
+					}
+				>
+					Dalej
+				</button>
 			</div>
 		</div>
 	);

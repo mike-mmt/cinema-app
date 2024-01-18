@@ -4,7 +4,7 @@ import { getCookie, setCookie, removeCookie } from 'typescript-cookie';
 export function setToken(token: string, isAdmin: boolean = false) {
 	setCookie('token', token, { expires: 7 });
 	setCookie('isAdmin', isAdmin.toString(), { expires: 7 });
-	axios.defaults.headers.common['Authorization'] = token;
+	axios.defaults.headers.common['x-access-token'] = token;
 }
 
 export function getTokenIfExists(
