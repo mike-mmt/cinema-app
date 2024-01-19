@@ -16,6 +16,8 @@ import { PricesContext, PricesType } from './contexts/PricesContext';
 import axios from 'axios';
 import OrderSummary from './components/ordersummary/OrderSummary';
 import Order from './components/ordersummary/Order';
+import Stats from './components/stats/Stats';
+import NotFound from './components/NotFound';
 
 function App() {
 	const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -61,6 +63,8 @@ function App() {
 								element={<OrderSummary />}
 							/>
 							<Route path='/order' element={<Order />} />
+							<Route path='/stats' element={<Stats />} />
+							<Route path='*' element={<NotFound />} />
 							{/* <Route path="/about" element={<About />} />
           <Route path="/events" element={<Events />} />
           <Route path="/products" element={<Products />} />

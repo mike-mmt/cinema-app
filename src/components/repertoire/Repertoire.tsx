@@ -8,6 +8,7 @@ import { ScreeningType } from '../../utils/screeningsUtils';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { fetchScreenings } from '../../utils/fetchScreenings';
+import { BsThreeDots } from 'react-icons/bs';
 
 export interface MovieType {
 	_id: string;
@@ -114,6 +115,9 @@ export default function Repertoire() {
 					className='cursor-pointer bg-transparent py-2 border-b-2 border-magnolia text-center text-xl font-semibold focus:outline focus:outline-magnolia'
 					dateFormat='dd.MM'
 				/>
+				{state.length === 0 && (
+					<BsThreeDots className='mt-8' size={'3em'} />
+				)}
 				<div className='movies-grid grid grid-cols-2 w-full mt-4 gap-x-8 gap-y-10 px-2'>
 					{state.map((movie: MovieType, index: number) => (
 						<MovieCard key={index} movie={movie} />
