@@ -5,9 +5,70 @@ const Order = require("../models/Order");
 const verifyAdmin = require("../utils/verify-admin");
 const Screening = require("../models/Screening");
 const retrievePrice = require("../utils/retrieve-price");
+const Account = require("../models/Account");
 
 router.get("/stats", [verifyJWT, verifyAdmin], async (req, res, next) => {
   try {
+    const { dateFrom, dateTo, month, year } = req.query;
+
+    const timeSelectPipeline = [
+      {
+        $match: {
+          date: {
+            ...(dateFrom && { $gte: new Date(dateFrom) }),
+            ...(dateTo && { $lte: new Date(dateTo) }),
+          },
+        },
+      },
+    ];
+
+    const orders = await Order.aggregate([
+      { $match: { paid: true } },
+      {
+        $lookup: {
+          from: "screenings",
+          localField: "screeningId",
+          foreignField: "_id",
+          as: "screening",
+          ...((dateFrom || dateTo) && { pipeline: timeSelectPipeline }),
+        },
+      },
+      { $unwind: "$screening" },
+      {
+        $group: {
+          _id: "$screening._id",
+          movieId: { $first: "$screening.movieId" },
+          totalPerScreening: { $sum: "$price" },
+        },
+      },
+      {
+        $group: {
+          _id: "$movieId",
+          totalPerMovie: { $sum: "$totalPerScreening" },
+          screenings: {
+            $push: {
+              screeningId: "$_id",
+              total: "$totalPerScreening",
+            },
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$totalPerMovie" },
+          movies: {
+            $push: {
+              movieId: "$_id",
+              total: "$totalPerMovie",
+              screenings: "$screenings",
+            },
+          },
+        },
+      },
+      { $project: { _id: 0 } },
+    ]).exec();
+    return res.status(200).json(orders);
   } catch (error) {
     next(error);
   }
@@ -72,8 +133,15 @@ router.post("/", verifyJWT, async (req, res, next) => {
         },
       }
     ).exec();
+    const updatedAccount = await Account.findByIdAndUpdate(req.body.userId, {
+      $push: {
+        orders: newOrder._id,
+      },
+    }).exec();
     return res.status(200).json(newOrder);
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;

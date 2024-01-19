@@ -3,6 +3,8 @@ const router = express.Router();
 const Screening = require("../models/Screening");
 const verifyJWT = require("../utils/verify-jwt-middleware");
 const verifyAdmin = require("../utils/verify-admin");
+const Order = require("../models/Order");
+const Account = require("../models/Account");
 
 // movieId: String,
 //   date: Date,
@@ -126,6 +128,13 @@ router.post("/multiple", [verifyJWT, verifyAdmin], async (req, res, next) => {
 router.delete("/:screeningId", async (req, res, next) => {
   try {
     const deleteQ = await Screening.findByIdAndDelete(req.params.screeningId);
+    const deleteOrders = await Order.deleteMany()
+      .where("screeningId")
+      .equals(req.params.screeningId);
+    const updatedAccounts = await Account.updateMany(
+      {},
+      { $pull: { orders: { screeningId: req.params.screeningId } } }
+    );
     return res
       .status(200)
       .json({ message: "success", deletedScreening: deleteQ._doc });
