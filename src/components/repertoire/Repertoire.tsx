@@ -21,6 +21,7 @@ export interface MovieType {
 	photoUrl: string;
 	trailerUrl: string;
 	galleryPhotoUrls: string[];
+	isCurrentlyScreening?: boolean;
 }
 interface ActionType {
 	type: string;
@@ -119,9 +120,17 @@ export default function Repertoire() {
 					<BsThreeDots className='mt-8' size={'3em'} />
 				)}
 				<div className='movies-grid grid grid-cols-2 w-full mt-4 gap-x-8 gap-y-10 px-2'>
-					{state.map((movie: MovieType, index: number) => (
-						<MovieCard key={index} movie={movie} />
-					))}
+					{state
+						.filter((m) => m.isCurrentlyScreening)
+						.map((movie: MovieType, index: number) => (
+							<MovieCard key={index} movie={movie} />
+						))}
+					{adminContext?.isAdmin &&
+						state
+							.filter((m) => !m.isCurrentlyScreening)
+							.map((movie: MovieType, index: number) => (
+								<MovieCard key={index} movie={movie} />
+							))}
 				</div>
 			</div>
 		</StaticGradientBg>

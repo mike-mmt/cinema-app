@@ -5,6 +5,7 @@ import Seat from './Seat';
 import { PricesContext } from '../../contexts/PricesContext';
 import { useNavigate } from 'react-router-dom';
 import { seatColors } from '../../utils/seatColors';
+import { gridColsStyles, seatColumnStyles, seatRowsStyles } from './SeatStyles';
 
 type Props = {
 	screening: PopulatedScreeningType;
@@ -27,9 +28,11 @@ export default function Seats({ screening, colsAmount }: Props) {
 		}
 	};
 
-	const getSeatRow = (seat: SeatType) => {
-		const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
-		return alphabet.indexOf(seat.row.toLowerCase()) + 1;
+	const getSeatColumnStyle = (seat: SeatType): string => {
+		return seatColumnStyles[seat.number + 1];
+	};
+	const getSeatRowStyle = (seat: SeatType): string => {
+		return seatRowsStyles[seat.row.toLowerCase()];
 	};
 
 	const getSeatColor = (seat: SeatType) => {
@@ -54,8 +57,7 @@ export default function Seats({ screening, colsAmount }: Props) {
 		return sum;
 	};
 
-	const gridColsStyle = 'grid-cols-' + (colsAmount + 1).toString();
-	// const gridColsStyle = ` grid-cols-${colsAmount + 1}`;
+	const gridColsStyle = gridColsStyles[colsAmount + 1];
 
 	return (
 		<div className='seatsDiagram flex flex-col items-center'>
@@ -67,18 +69,28 @@ export default function Seats({ screening, colsAmount }: Props) {
 					'seats p-8 grid grid-cols-17 gap-[0.25rem] ' + gridColsStyle
 				}
 			>
+				{screening.seats.map(
+					(seat, index) =>
+						seat.number === 1 && (
+							<p
+								key={index}
+								className={`col-start-1 ${getSeatRowStyle(
+									seat,
+								)}`}
+							>
+								{seat.row}
+							</p>
+						),
+				)}
 				{screening.seats.map((seat, index) => (
-					<>
-						{seat.number === 1 && seat.row}
-						<Seat
-							key={index}
-							seatColor={getSeatColor(seat)}
-							className={`col-start-${
-								seat.number
-							} row-start-${getSeatRow(seat)}`}
-							onClick={(e) => handleSelectSeat(e, seat)}
-						/>
-					</>
+					<Seat
+						key={index}
+						seatColor={getSeatColor(seat)}
+						className={`${getSeatColumnStyle(
+							seat,
+						)} ${getSeatRowStyle(seat)}`}
+						onClick={(e) => handleSelectSeat(e, seat)}
+					/>
 				))}
 			</div>
 			<div className='legend flex gap-2 items-center'>
