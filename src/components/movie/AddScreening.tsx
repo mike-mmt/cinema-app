@@ -13,12 +13,7 @@ type Props = {
 	setScreeningsHaveChanged: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function AddScreening({
-	movieId,
-	setShow,
-	initialDate,
-	setScreeningsHaveChanged,
-}: Props) {
+export default function AddScreening({ movieId, setShow, initialDate, setScreeningsHaveChanged }: Props) {
 	const formik = useFormik({
 		initialValues: {
 			date: initialDate || new Date(),
@@ -56,23 +51,16 @@ export default function AddScreening({
 					x
 				</p>
 				<h2 className='text-center text-lg'>Dodaj nowy seans</h2>
-				<form
-					onSubmit={formik.handleSubmit}
-					className='w-4/5 flex flex-col items-center gap-4'
-				>
+				<form onSubmit={formik.handleSubmit} className='w-4/5 flex flex-col items-center gap-4'>
 					<DatePicker
 						id='date'
 						{...formik.getFieldProps('date')}
 						selected={formik.values.date}
-						onChange={(date: Date) =>
-							formik.setFieldValue('date', date)
-						}
+						onChange={(date: Date) => formik.setFieldValue('date', date)}
 						className='bg-transparent mt-4 p-3 w-full border rounded-md border-magnolia text-center text-xl font-semibold'
 						calendarClassName='bg-slate-700 text-magnolia'
 						dayClassName={() => 'text-magnolia'}
-						timeClassName={() =>
-							'bg-slate-700 text-magnolia hover:text-gunmetal hover:bg-magnolia'
-						}
+						timeClassName={() => 'bg-slate-700 text-magnolia hover:text-gunmetal hover:bg-magnolia'}
 						dateFormat={'dd.MM.yyyy HH:mm'}
 						showTimeSelect
 						timeFormat='HH:mm'

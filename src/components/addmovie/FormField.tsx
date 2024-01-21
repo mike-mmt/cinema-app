@@ -11,27 +11,13 @@ type Props = {
 	};
 };
 
-export default function FormField({
-	field,
-	label,
-	type,
-	formik,
-	attrs,
-}: Props) {
+export default function FormField({ field, label, type, formik, attrs }: Props) {
 	return (
 		<div className={'form-field flex flex-col'}>
 			<label htmlFor={field}>{label}</label>
-			<input
-				id={field}
-				type={type}
-				{...formik.getFieldProps(field)}
-				{...attrs}
-			/>
-			{formik.touched[field as keyof valuesType] &&
-			formik.errors[field as keyof valuesType] ? (
-				<div className='formikError'>
-					{formik.errors[field as keyof valuesType]}
-				</div>
+			<input id={field} type={type} {...formik.getFieldProps(field)} {...attrs} />
+			{formik.touched[field as keyof valuesType] && formik.errors[field as keyof valuesType] ? (
+				<div className='formikError'>{formik.errors[field as keyof valuesType]}</div>
 			) : null}
 		</div>
 	);

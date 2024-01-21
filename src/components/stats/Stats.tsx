@@ -25,12 +25,11 @@ const reducer = (state: StatsState, action: ActionType) => {
 						...state,
 						sortBy: action.sortBy,
 						sortOrder:
-							action.sortBy === state.sortBy &&
-							state.sortOrder === SortOrder.DESC
+							action.sortBy === state.sortBy && state.sortOrder === SortOrder.DESC
 								? SortOrder.ASC
 								: SortOrder.DESC,
 						// eslint-disable-next-line no-mixed-spaces-and-tabs
-				  }
+					}
 				: state;
 		default:
 			return state;
@@ -64,16 +63,14 @@ export default function Stats() {
 	const [year, setYear] = useState(new Date());
 
 	useEffect(() => {
-		axios
-			.get(import.meta.env.VITE_BACKEND_URL + '/orders/stats')
-			.then((response) => {
-				// console.log('total');
-				// console.log(response.data);
-				dispatch({
-					type: 'SET_TOTAL',
-					payload: response.data,
-				});
+		axios.get(import.meta.env.VITE_BACKEND_URL + '/orders/stats').then((response) => {
+			// console.log('total');
+			// console.log(response.data);
+			dispatch({
+				type: 'SET_TOTAL',
+				payload: response.data,
 			});
+		});
 
 		fetchDayStats(day);
 		fetchMonthStats(month);
@@ -81,17 +78,12 @@ export default function Stats() {
 	}, []);
 
 	const fetchDayStats = async (date: Date) => {
-		const response = await axios.get(
-			import.meta.env.VITE_BACKEND_URL + '/orders/stats',
-			{
-				params: {
-					dateFrom: new Date(date.setHours(0, 0, 0, 0)).toISOString(),
-					dateTo: new Date(
-						date.setHours(23, 59, 59, 999),
-					).toISOString(),
-				},
+		const response = await axios.get(import.meta.env.VITE_BACKEND_URL + '/orders/stats', {
+			params: {
+				dateFrom: new Date(date.setHours(0, 0, 0, 0)).toISOString(),
+				dateTo: new Date(date.setHours(23, 59, 59, 999)).toISOString(),
 			},
-		);
+		});
 		dispatch({
 			type: 'SET_DAY_STATS',
 			payload: response.data || { total: 0, movies: [] },
@@ -99,23 +91,12 @@ export default function Stats() {
 	};
 
 	const fetchMonthStats = async (date: Date) => {
-		const response = await axios.get(
-			import.meta.env.VITE_BACKEND_URL + '/orders/stats',
-			{
-				params: {
-					dateFrom: new Date(
-						date.getFullYear(),
-						date.getMonth(),
-						1,
-					).toISOString(),
-					dateTo: new Date(
-						date.getFullYear(),
-						date.getMonth() + 1,
-						0,
-					).toISOString(),
-				},
+		const response = await axios.get(import.meta.env.VITE_BACKEND_URL + '/orders/stats', {
+			params: {
+				dateFrom: new Date(date.getFullYear(), date.getMonth(), 1).toISOString(),
+				dateTo: new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString(),
 			},
-		);
+		});
 		// console.log(response);
 
 		dispatch({
@@ -125,31 +106,12 @@ export default function Stats() {
 	};
 
 	const fetchYearStats = async (date: Date) => {
-		const response = await axios.get(
-			import.meta.env.VITE_BACKEND_URL + '/orders/stats',
-			{
-				params: {
-					dateFrom: new Date(
-						date.getFullYear(),
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-					).toISOString(),
-					dateTo: new Date(
-						date.getFullYear(),
-						11,
-						31,
-						0,
-						0,
-						0,
-						0,
-					).toISOString(),
-				},
+		const response = await axios.get(import.meta.env.VITE_BACKEND_URL + '/orders/stats', {
+			params: {
+				dateFrom: new Date(date.getFullYear(), 0, 0, 0, 0, 0, 0).toISOString(),
+				dateTo: new Date(date.getFullYear(), 11, 31, 0, 0, 0, 0).toISOString(),
 			},
-		);
+		});
 		dispatch({
 			type: 'SET_YEAR_STATS',
 			payload: response.data || { total: 0, movies: [] },
@@ -162,43 +124,31 @@ export default function Stats() {
 				movie: m.movie,
 				allTotal: m.totalPerMovie,
 				dayTotal:
-					state.dayStats.movies?.find(
-						(dayMovie) => dayMovie.movie._id === m.movie._id,
-					)?.totalPerMovie || 0,
+					state.dayStats.movies?.find((dayMovie) => dayMovie.movie._id === m.movie._id)?.totalPerMovie || 0,
 				monthTotal:
-					state.monthStats.movies?.find(
-						(monthMovie) => monthMovie.movie._id === m.movie._id,
-					)?.totalPerMovie || 0,
+					state.monthStats.movies?.find((monthMovie) => monthMovie.movie._id === m.movie._id)
+						?.totalPerMovie || 0,
 				yearTotal:
-					state.yearStats.movies?.find(
-						(yearMovie) => yearMovie.movie._id === m.movie._id,
-					)?.totalPerMovie || 0,
+					state.yearStats.movies?.find((yearMovie) => yearMovie.movie._id === m.movie._id)?.totalPerMovie ||
+					0,
 			};
 		});
 		switch (state.sortBy) {
 			case SortBy.DAY:
 				return movies.sort((a, b) =>
-					state.sortOrder === SortOrder.ASC
-						? a.dayTotal - b.dayTotal
-						: b.dayTotal - a.dayTotal,
+					state.sortOrder === SortOrder.ASC ? a.dayTotal - b.dayTotal : b.dayTotal - a.dayTotal,
 				);
 			case SortBy.MONTH:
 				return movies.sort((a, b) =>
-					state.sortOrder === SortOrder.ASC
-						? a.monthTotal - b.monthTotal
-						: b.monthTotal - a.monthTotal,
+					state.sortOrder === SortOrder.ASC ? a.monthTotal - b.monthTotal : b.monthTotal - a.monthTotal,
 				);
 			case SortBy.YEAR:
 				return movies.sort((a, b) =>
-					state.sortOrder === SortOrder.ASC
-						? a.yearTotal - b.yearTotal
-						: b.yearTotal - a.yearTotal,
+					state.sortOrder === SortOrder.ASC ? a.yearTotal - b.yearTotal : b.yearTotal - a.yearTotal,
 				);
 			case SortBy.ALL:
 				return movies.sort((a, b) =>
-					state.sortOrder === SortOrder.ASC
-						? a.allTotal - b.allTotal
-						: b.allTotal - a.allTotal,
+					state.sortOrder === SortOrder.ASC ? a.allTotal - b.allTotal : b.allTotal - a.allTotal,
 				);
 			case SortBy.NAME:
 				return movies.sort((a, b) =>
@@ -218,20 +168,12 @@ export default function Stats() {
 					</h1>
 					<div className='statsTable grid grid-cols-5 p-4'>
 						<GridItem className='col-start-1 row-start-1 flex flex-col'>
-							<SortTitleButton
-								sortBy={SortBy.NAME}
-								state={state}
-								dispatch={dispatch}
-							>
+							<SortTitleButton sortBy={SortBy.NAME} state={state} dispatch={dispatch}>
 								Tytuł
 							</SortTitleButton>
 						</GridItem>
 						<GridItem className='col-start-2 row-start-1 flex flex-col'>
-							<SortTitleButton
-								sortBy={SortBy.DAY}
-								state={state}
-								dispatch={dispatch}
-							>
+							<SortTitleButton sortBy={SortBy.DAY} state={state} dispatch={dispatch}>
 								Dzień
 							</SortTitleButton>
 							<DatePicker
@@ -245,11 +187,7 @@ export default function Stats() {
 							/>
 						</GridItem>
 						<GridItem className='col-start-3 row-start-1 flex flex-col'>
-							<SortTitleButton
-								sortBy={SortBy.MONTH}
-								state={state}
-								dispatch={dispatch}
-							>
+							<SortTitleButton sortBy={SortBy.MONTH} state={state} dispatch={dispatch}>
 								Miesiąc
 							</SortTitleButton>
 							<DatePicker
@@ -264,11 +202,7 @@ export default function Stats() {
 							/>
 						</GridItem>
 						<GridItem className='col-start-4 row-start-1 flex flex-col'>
-							<SortTitleButton
-								sortBy={SortBy.YEAR}
-								state={state}
-								dispatch={dispatch}
-							>
+							<SortTitleButton sortBy={SortBy.YEAR} state={state} dispatch={dispatch}>
 								Rok
 							</SortTitleButton>
 							<DatePicker
@@ -283,58 +217,37 @@ export default function Stats() {
 							/>
 						</GridItem>
 						<GridItem className='col-start-5 row-start-1'>
-							<SortTitleButton
-								sortBy={SortBy.ALL}
-								state={state}
-								dispatch={dispatch}
-							>
+							<SortTitleButton sortBy={SortBy.ALL} state={state} dispatch={dispatch}>
 								Całość
 							</SortTitleButton>
 						</GridItem>
 
 						<GridItem className='col-start-1 row-start-2'>
-							<p className='text-lg font-semibold'>
-								Całkowity przychód
-							</p>
+							<p className='text-lg font-semibold'>Całkowity przychód</p>
 						</GridItem>
 						<GridItem className='col-start-2 row-start-2'>
 							<p className='font-semibold'>
-								{(state.dayStats &&
-									state.dayStats.total.toFixed(2)) ||
-									0}{' '}
-								zł
+								{(state.dayStats && state.dayStats.total.toFixed(2)) || 0} zł
 							</p>
 						</GridItem>
 						<GridItem className='col-start-3 row-start-2'>
 							<p className='font-semibold'>
-								{(state.monthStats &&
-									state.monthStats.total.toFixed(2)) ||
-									0}{' '}
-								zł
+								{(state.monthStats && state.monthStats.total.toFixed(2)) || 0} zł
 							</p>
 						</GridItem>
 						<GridItem className='col-start-4 row-start-2'>
 							<p className='font-semibold'>
-								{(state.yearStats &&
-									state.yearStats.total.toFixed(2)) ||
-									0}{' '}
-								zł
+								{(state.yearStats && state.yearStats.total.toFixed(2)) || 0} zł
 							</p>
 						</GridItem>
 						<GridItem className='col-start-5 row-start-2'>
-							<p className='font-semibold'>
-								{state.allStats &&
-									state.allStats.total.toFixed(2)}{' '}
-								zł
-							</p>
+							<p className='font-semibold'>{state.allStats && state.allStats.total.toFixed(2)} zł</p>
 						</GridItem>
 						{state.allStats &&
 							getSortedMovies().map((movie, index) => (
 								<GridMovieRow key={index}>
 									<GridItem className='col-start-1'>
-										<p className='text-lg font-semibold'>
-											{movie.movie.title}
-										</p>
+										<p className='text-lg font-semibold'>{movie.movie.title}</p>
 									</GridItem>
 									<GridItem className='col-start-2'>
 										<p>{movie.dayTotal.toFixed(2)} zł</p>

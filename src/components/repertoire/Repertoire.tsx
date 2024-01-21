@@ -47,27 +47,20 @@ function reducer(state: MovieType[], action: ActionType): MovieType[] {
 }
 
 export default function Repertoire() {
-	const [state, dispatch] = useReducer<
-		(state: MovieType[], action: ActionType) => MovieType[]
-	>(reducer, []);
+	const [state, dispatch] = useReducer<(state: MovieType[], action: ActionType) => MovieType[]>(reducer, []);
 	const adminContext = useContext(AdminContext);
 	const [startDate, setStartDate] = useState(new Date());
 
 	useEffect(() => {
-		axios
-			.get(import.meta.env.VITE_BACKEND_URL + '/movies')
-			.then((response) => {
-				console.log(response);
+		axios.get(import.meta.env.VITE_BACKEND_URL + '/movies').then((response) => {
+			console.log(response);
 
-				const dispatchBody = {
-					type: 'set',
-					payload:
-						response.status === 200
-							? response.data
-							: ([] as MovieType[]),
-				};
-				dispatch(dispatchBody);
-			});
+			const dispatchBody = {
+				type: 'set',
+				payload: response.status === 200 ? response.data : ([] as MovieType[]),
+			};
+			dispatch(dispatchBody);
+		});
 	}, []);
 
 	const handleFetchScreenings = async () => {
@@ -82,10 +75,7 @@ export default function Repertoire() {
 		// );
 		const dispatchBody = {
 			type: 'setScreenings',
-			payload:
-				response?.status === 200
-					? response.data
-					: ([] as ScreeningType[]),
+			payload: response?.status === 200 ? response.data : ([] as ScreeningType[]),
 		};
 		dispatch(dispatchBody);
 	};
@@ -98,13 +88,7 @@ export default function Repertoire() {
 		<StaticGradientBg styles='flex justify-center bg-fixed'>
 			{/* <div className="background-all h-screen "> */}
 			<div className='movies-wrapper w-11/12 flex flex-col items-center mt-8'>
-				{adminContext?.isAdmin && (
-					<LinkButton
-						link='/addmovie'
-						text='Dodaj nowy film'
-						styles='mb-5'
-					/>
-				)}
+				{adminContext?.isAdmin && <LinkButton link='/addmovie' text='Dodaj nowy film' styles='mb-5' />}
 				<h1 className='text-4xl font-semibold w-full text-center pb-4 border-b-2 border-b-outer-space-half'>
 					Repertuar
 				</h1>
@@ -116,9 +100,7 @@ export default function Repertoire() {
 					className='cursor-pointer bg-transparent py-2 border-b-2 border-magnolia text-center text-xl font-semibold focus:outline focus:outline-magnolia'
 					dateFormat='dd.MM'
 				/>
-				{state.length === 0 && (
-					<BsThreeDots className='mt-8' size={'3em'} />
-				)}
+				{state.length === 0 && <BsThreeDots className='mt-8' size={'3em'} />}
 				<div className='movies-grid grid grid-cols-2 w-full mt-4 gap-x-8 gap-y-10 px-2'>
 					{state
 						.filter((m) => m.isCurrentlyScreening)
@@ -128,9 +110,7 @@ export default function Repertoire() {
 					{adminContext?.isAdmin &&
 						state
 							.filter((m) => !m.isCurrentlyScreening)
-							.map((movie: MovieType, index: number) => (
-								<MovieCard key={index} movie={movie} />
-							))}
+							.map((movie: MovieType, index: number) => <MovieCard key={index} movie={movie} />)}
 				</div>
 			</div>
 		</StaticGradientBg>

@@ -34,9 +34,7 @@ export default function Movie() {
 			new Date(startDate.setHours(23, 59, 59, 999)),
 			movieId,
 		);
-		setScreenings(
-			response?.status === 200 ? response.data : ([] as ScreeningType[]),
-		);
+		setScreenings(response?.status === 200 ? response.data : ([] as ScreeningType[]));
 		setScreeningsHaveChanged(false);
 	}
 
@@ -76,10 +74,7 @@ export default function Movie() {
 							<div className='flex items-center gap-2 mt-4 text-sm pb-4 border-b-2 border-b-slate-500'>
 								<p className='text-slate-400'>{movie?.year}</p>
 								{movie?.genres.map((genre, index) => (
-									<p
-										key={index}
-										className='text-slate-400 border-l-2 border-slate-400 ml-2 pl-4'
-									>
+									<p key={index} className='text-slate-400 border-l-2 border-slate-400 ml-2 pl-4'>
 										{genre}
 									</p>
 								))}
@@ -87,23 +82,14 @@ export default function Movie() {
 							<div className='flex max-w-4/5 mt-4 justify-center items-center w-full'>
 								<div className='flex w-2/5 flex-col items-center'>
 									<p className='text-slate-300'>Reżyseria</p>
-									<p className='text-slate-400'>
-										{movie?.director}
-									</p>
+									<p className='text-slate-400'>{movie?.director}</p>
 								</div>
 								<div className='flex w-2/5 flex-col items-center'>
 									<p className='text-slate-300'>Obsada</p>
 									<div className='flex flex-wrap w-3/5 text-center'>
 										{movie?.actors.map((actor, index) => (
-											<p
-												key={index}
-												className='text-slate-400 mr-1'
-											>
-												{actor +
-													(index !==
-													movie.actors.length - 1
-														? ', '
-														: '')}
+											<p key={index} className='text-slate-400 mr-1'>
+												{actor + (index !== movie.actors.length - 1 ? ', ' : '')}
 											</p>
 										))}
 									</div>
@@ -123,15 +109,11 @@ export default function Movie() {
 							<div className='flex items-center mt-4 gap-2'>
 								<ScreeningsList
 									screenings={screenings}
-									setScreeningsHaveChanged={
-										setScreeningsHaveChanged
-									}
+									setScreeningsHaveChanged={setScreeningsHaveChanged}
 								/>
 								{adminContext?.isAdmin && (
 									<p
-										onClick={() =>
-											setShowAddScreening(true)
-										}
+										onClick={() => setShowAddScreening(true)}
 										className='cursor-pointer bg-outer-space-quarter border border-magnolia hover:border-rosered hover:text-rosered hover:bg-transparent transition-colors duration-100 px-6 py-3 w-fit rounded-md text-lg text-center align-middle'
 									>
 										+
@@ -144,9 +126,7 @@ export default function Movie() {
 									initialDate={startDate}
 									setShow={setShowAddScreening}
 									movieId={movieId}
-									setScreeningsHaveChanged={
-										setScreeningsHaveChanged
-									}
+									setScreeningsHaveChanged={setScreeningsHaveChanged}
 								/>
 							)}
 						</div>
@@ -161,10 +141,7 @@ export default function Movie() {
 						{movie?.trailerUrl && (
 							<YoutubeEmbed
 								className='h-[360px] w-[640px]'
-								src={
-									getYoutubeEmbedFromUrl(movie.trailerUrl) ||
-									''
-								}
+								src={getYoutubeEmbedFromUrl(movie.trailerUrl) || ''}
 							/>
 						)}
 						{adminContext?.isAdmin && (
@@ -175,12 +152,7 @@ export default function Movie() {
 								+
 							</p>
 						)}
-						{showAddTrailer && (
-							<AddTrailer
-								setShow={setShowAddTrailer}
-								movieId={movieId}
-							/>
-						)}
+						{showAddTrailer && <AddTrailer setShow={setShowAddTrailer} movieId={movieId} />}
 					</div>
 				)}
 				{movie && movieId && (

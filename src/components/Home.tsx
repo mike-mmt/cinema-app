@@ -27,16 +27,8 @@ export default function Home() {
 						</>
 					) : (
 						<>
-							<LinkButton
-								link='/login'
-								text='Zaloguj się'
-								styles='min-h-16 min-w-44 text-xl'
-							/>
-							<LinkButton
-								link='/register'
-								text='Zarejestruj się'
-								styles='min-h-16 min-w-44 text-xl'
-							/>
+							<LinkButton link='/login' text='Zaloguj się' styles='min-h-16 min-w-44 text-xl' />
+							<LinkButton link='/register' text='Zarejestruj się' styles='min-h-16 min-w-44 text-xl' />
 						</>
 					)}
 				</div>

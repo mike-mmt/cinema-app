@@ -10,13 +10,7 @@ type Props = {
 	dispatch: React.Dispatch<ActionType>;
 };
 
-export default function SortTitleButton({
-	children,
-	className,
-	sortBy,
-	state,
-	dispatch,
-}: Props) {
+export default function SortTitleButton({ children, className, sortBy, state, dispatch }: Props) {
 	return (
 		<div
 			onClick={() =>
@@ -25,29 +19,12 @@ export default function SortTitleButton({
 					sortBy: sortBy,
 				})
 			}
-			className={
-				'w-full h-full flex items-center justify-center gap-2 ' +
-				className
-			}
+			className={'w-full h-full flex items-center justify-center gap-2 ' + className}
 		>
 			<p>{children}</p>
 			{(state.sortBy === sortBy && state.sortOrder === SortOrder.ASC && (
-				<BiSolidUpArrow
-					className={
-						state.sortBy === sortBy
-							? 'text-rosered'
-							: 'text-magnolia'
-					}
-				/>
-			)) || (
-				<BiSolidDownArrow
-					className={
-						state.sortBy === sortBy
-							? 'text-rosered'
-							: 'text-magnolia'
-					}
-				/>
-			)}
+				<BiSolidUpArrow className={state.sortBy === sortBy ? 'text-rosered' : 'text-magnolia'} />
+			)) || <BiSolidDownArrow className={state.sortBy === sortBy ? 'text-rosered' : 'text-magnolia'} />}
 		</div>
 	);
 }

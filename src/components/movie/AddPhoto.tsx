@@ -81,9 +81,7 @@ export default function AddPhoto({ movieId, setShow }: Props) {
 						{...formik.getFieldProps('photoUrls')}
 					/>
 					{formik.touched.photoUrls && formik.errors.photoUrls ? (
-						<div className='formikError'>
-							{formik.errors.photoUrls}
-						</div>
+						<div className='formikError'>{formik.errors.photoUrls}</div>
 					) : null}
 					<label htmlFor='photoFiles'>Pliki zdjęć</label>
 					<input
@@ -102,14 +100,9 @@ export default function AddPhoto({ movieId, setShow }: Props) {
 						className='text-magnolia'
 					/>
 					{formik.touched.photoFiles && formik.errors.photoFiles ? (
-						<div className='formikError'>
-							{formik.errors.photoFiles}
-						</div>
+						<div className='formikError'>{formik.errors.photoFiles}</div>
 					) : null}
-					<button
-						type='submit'
-						className='form-button mt-4 w-fit text-magnolia'
-					>
+					<button type='submit' className='form-button mt-4 w-fit text-magnolia'>
 						Dodaj
 					</button>
 				</form>

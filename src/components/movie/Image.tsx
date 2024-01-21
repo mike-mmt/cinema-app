@@ -10,12 +10,7 @@ type Props = {
 	setHasChanged: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function Image({
-	src,
-	className,
-	movieId,
-	setHasChanged,
-}: Props) {
+export default function Image({ src, className, movieId, setHasChanged }: Props) {
 	const [fullScreen, setFullScreen] = useState<boolean>(false);
 	const adminContext = useContext(AdminContext);
 
@@ -26,17 +21,11 @@ export default function Image({
 
 	async function handleDelete(event: React.MouseEvent) {
 		event.stopPropagation();
-		const response = await axios.delete(
-			import.meta.env.VITE_BACKEND_URL +
-				'/movie/' +
-				movieId +
-				'/galleryPhoto',
-			{
-				params: {
-					galleryPhotoUrl: src,
-				},
+		const response = await axios.delete(import.meta.env.VITE_BACKEND_URL + '/movie/' + movieId + '/galleryPhoto', {
+			params: {
+				galleryPhotoUrl: src,
 			},
-		);
+		});
 		setHasChanged(true);
 		console.log(response);
 	}
@@ -44,11 +33,7 @@ export default function Image({
 	return (
 		<>
 			<div className='relative'>
-				<img
-					src={src}
-					className={className}
-					onClick={(e) => handleClick(e)}
-				></img>
+				<img src={src} className={className} onClick={(e) => handleClick(e)}></img>
 				{adminContext?.isAdmin && (
 					<MdDeleteForever
 						color='red'
@@ -61,11 +46,7 @@ export default function Image({
 
 			{fullScreen && (
 				<div className='fixed flex justify-center items-center inset-0 h-[90vh] z-50 mt-2  hover:cursor-pointer'>
-					<img
-						src={src}
-						className='h-full'
-						onClick={(e) => handleClick(e)}
-					></img>
+					<img src={src} className='h-full' onClick={(e) => handleClick(e)}></img>
 				</div>
 			)}
 		</>

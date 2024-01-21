@@ -16,8 +16,9 @@ export default function MovieCard({ movie }: Props) {
 		navigate(`/movie/${movie._id}`);
 	};
 
-	const [notCurrentlyScreeningStyle, setNotCurrentlyScreeningStyle] =
-		useState(movie.isCurrentlyScreening ? '' : ' opacity-50');
+	const [notCurrentlyScreeningStyle, setNotCurrentlyScreeningStyle] = useState(
+		movie.isCurrentlyScreening ? '' : ' opacity-50',
+	);
 
 	const handleToggleCurrentlyScreening = (e: React.MouseEvent) => {
 		e.stopPropagation();
@@ -30,9 +31,7 @@ export default function MovieCard({ movie }: Props) {
 
 				if (response.status === 200) {
 					movie.isCurrentlyScreening = !movie.isCurrentlyScreening;
-					setNotCurrentlyScreeningStyle(
-						movie.isCurrentlyScreening ? '' : ' opacity-50',
-					);
+					setNotCurrentlyScreeningStyle(movie.isCurrentlyScreening ? '' : ' opacity-50');
 				}
 			});
 	};
@@ -48,9 +47,7 @@ export default function MovieCard({ movie }: Props) {
 			<img src={movie.photoUrl} className='m-4 w-4/12'></img>
 			<div className='info flex flex-col w-full'>
 				<div className='title-genres-wrapper border-b-2 pb-4 border-b-outer-space-quarter'>
-					<h2 className='break-normal text-xl font-semibold text-center '>
-						{movie.title}
-					</h2>
+					<h2 className='break-normal text-xl font-semibold text-center '>{movie.title}</h2>
 				</div>
 				<div className='flex items-center mt-4 gap-2'>
 					<ScreeningsList screenings={movie.screenings} />

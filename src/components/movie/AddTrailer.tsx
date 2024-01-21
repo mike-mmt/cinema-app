@@ -33,10 +33,7 @@ export default function AddTrailer({ movieId, setShow }: Props) {
 			...values,
 		};
 
-		const response = await axios.patch(
-			import.meta.env.VITE_BACKEND_URL + '/movie/' + movieId,
-			body,
-		);
+		const response = await axios.patch(import.meta.env.VITE_BACKEND_URL + '/movie/' + movieId, body);
 		console.log(response);
 	}
 
@@ -51,10 +48,7 @@ export default function AddTrailer({ movieId, setShow }: Props) {
 					x
 				</p>
 				<h2 className='text-center text-lg'>Dodaj trailer</h2>
-				<form
-					onSubmit={formik.handleSubmit}
-					className='w-4/5 flex flex-col items-center gap-4'
-				>
+				<form onSubmit={formik.handleSubmit} className='w-4/5 flex flex-col items-center gap-4'>
 					<label htmlFor='trailerUrl'>Link do YouTube</label>
 					<input
 						id='trailerUrl'
@@ -63,14 +57,9 @@ export default function AddTrailer({ movieId, setShow }: Props) {
 						className='bg-gunmetal text-magnolia border-b-2 border-magnolia w-full'
 					/>
 					{formik.touched.trailerUrl && formik.errors.trailerUrl ? (
-						<div className='formikError'>
-							{formik.errors.trailerUrl}
-						</div>
+						<div className='formikError'>{formik.errors.trailerUrl}</div>
 					) : null}
-					<button
-						type='submit'
-						className='form-button mt-4 w-fit text-magnolia'
-					>
+					<button type='submit' className='form-button mt-4 w-fit text-magnolia'>
 						Dodaj
 					</button>
 				</form>

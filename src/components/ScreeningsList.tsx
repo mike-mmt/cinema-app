@@ -11,18 +11,12 @@ type Props = {
 	setScreeningsHaveChanged?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function ScreeningsList({
-	screenings,
-	setScreeningsHaveChanged,
-}: Props) {
+export default function ScreeningsList({ screenings, setScreeningsHaveChanged }: Props) {
 	const loginContext = useContext(LoginContext);
 	const adminContext = useContext(AdminContext);
 	const navigate = useNavigate();
 
-	const handleScreeningClick = (
-		event: React.MouseEvent,
-		screeningId: string,
-	) => {
+	const handleScreeningClick = (event: React.MouseEvent, screeningId: string) => {
 		event.stopPropagation();
 		if (loginContext?.loggedIn) {
 			navigate(`/screening/${screeningId}#main`);
@@ -31,11 +25,9 @@ export default function ScreeningsList({
 
 	async function handleDelete(event: React.MouseEvent, id: string) {
 		event.stopPropagation();
-		axios
-			.delete(import.meta.env.VITE_BACKEND_URL + '/screenings/' + id)
-			.then(() => {
-				setScreeningsHaveChanged && setScreeningsHaveChanged(true);
-			});
+		axios.delete(import.meta.env.VITE_BACKEND_URL + '/screenings/' + id).then(() => {
+			setScreeningsHaveChanged && setScreeningsHaveChanged(true);
+		});
 
 		// console.log(response);
 	}
@@ -49,33 +41,23 @@ export default function ScreeningsList({
 					return (
 						<div
 							key={index}
-							onClick={(e) =>
-								handleScreeningClick(e, screening._id)
-							}
+							onClick={(e) => handleScreeningClick(e, screening._id)}
 							className='relative cursor-pointer bg-outer-space-quarter border border-magnolia hover:border-rosered hover:text-rosered hover:bg-transparent transition-colors duration-100 py-2 min-h-12 min-w-24 rounded-md text-lg text-center tracking-wider'
 						>
 							<p className='text-xl'>
 								{date.getHours().toString().padStart(2, '0') +
 									':' +
-									date
-										.getMinutes()
-										.toString()
-										.padStart(2, '0')}
+									date.getMinutes().toString().padStart(2, '0')}
 							</p>
-							<p className='text-xs'>{`${screening.type}, ${
-								screeningSoundMap[screening.sound]
-							}`}</p>
-							{adminContext?.isAdmin &&
-								setScreeningsHaveChanged && (
-									<MdDeleteForever
-										color='red'
-										size='1em'
-										className='absolute top-0 right-0 m-1 hover:bg-outer-space-half rounded-xl'
-										onClick={(e) =>
-											handleDelete(e, screening._id)
-										}
-									/>
-								)}
+							<p className='text-xs'>{`${screening.type}, ${screeningSoundMap[screening.sound]}`}</p>
+							{adminContext?.isAdmin && setScreeningsHaveChanged && (
+								<MdDeleteForever
+									color='red'
+									size='1em'
+									className='absolute top-0 right-0 m-1 hover:bg-outer-space-half rounded-xl'
+									onClick={(e) => handleDelete(e, screening._id)}
+								/>
+							)}
 						</div>
 					);
 				})}

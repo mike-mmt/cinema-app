@@ -49,10 +49,7 @@ export default function Seats({ screening, colsAmount }: Props) {
 	const calculateOrderSum = () => {
 		let sum = 0;
 		selectedSeats.forEach((seat) => {
-			sum +=
-				seat.class.toLowerCase() === 'vip'
-					? prices?.current?.vip ?? 0
-					: prices?.current?.normal ?? 0;
+			sum += seat.class.toLowerCase() === 'vip' ? prices?.current?.vip ?? 0 : prices?.current?.normal ?? 0;
 		});
 		return sum;
 	};
@@ -61,23 +58,12 @@ export default function Seats({ screening, colsAmount }: Props) {
 
 	return (
 		<div className='seatsDiagram flex flex-col items-center'>
-			<p className='w-4/5 border-zinc-800 text-zinc-400 border-b-4 font-normal text-center text-sm'>
-				EKRAN
-			</p>
-			<div
-				className={
-					'seats p-8 grid grid-cols-17 gap-[0.25rem] ' + gridColsStyle
-				}
-			>
+			<p className='w-4/5 border-zinc-800 text-zinc-400 border-b-4 font-normal text-center text-sm'>EKRAN</p>
+			<div className={'seats p-8 grid grid-cols-17 gap-[0.25rem] ' + gridColsStyle}>
 				{screening.seats.map(
 					(seat, index) =>
 						seat.number === 1 && (
-							<p
-								key={index}
-								className={`col-start-1 ${getSeatRowStyle(
-									seat,
-								)}`}
-							>
+							<p key={index} className={`col-start-1 ${getSeatRowStyle(seat)}`}>
 								{seat.row}
 							</p>
 						),
@@ -86,9 +72,7 @@ export default function Seats({ screening, colsAmount }: Props) {
 					<Seat
 						key={index}
 						seatColor={getSeatColor(seat)}
-						className={`${getSeatColumnStyle(
-							seat,
-						)} ${getSeatRowStyle(seat)}`}
+						className={`${getSeatColumnStyle(seat)} ${getSeatRowStyle(seat)}`}
 						onClick={(e) => handleSelectSeat(e, seat)}
 					/>
 				))}
@@ -118,11 +102,7 @@ export default function Seats({ screening, colsAmount }: Props) {
 						{selectedSeats.map((seat, index) => (
 							<Seat
 								key={index}
-								seatColor={
-									seat.class.toLowerCase() === 'vip'
-										? seatColors.vip
-										: seatColors.normal
-								}
+								seatColor={seat.class.toLowerCase() === 'vip' ? seatColors.vip : seatColors.normal}
 								className='flex justify-center items-center w-10 h-10 text-gunmetal text-lg font-semibold text-center align-middle'
 							>
 								{seat.row + ' ' + seat.number}

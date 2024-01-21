@@ -12,27 +12,20 @@ export interface PopulatedScreeningType extends Omit<ScreeningType, 'movieId'> {
 
 export default function Screening() {
 	const { screeningId } = useParams();
-	const [screening, setScreening] = useState<PopulatedScreeningType | null>(
-		null,
-	);
+	const [screening, setScreening] = useState<PopulatedScreeningType | null>(null);
 	const [colsAmount, setColsAmount] = useState(16);
 
 	useEffect(() => {
-		axios
-			.get(
-				import.meta.env.VITE_BACKEND_URL + '/screenings/' + screeningId,
-			)
-			.then((response) => {
-				// console.log(response.data);
-				if (response.status === 200) {
-					setScreening(response.data);
-					setColsAmount(calculateCols(response.data));
-				}
-			});
+		axios.get(import.meta.env.VITE_BACKEND_URL + '/screenings/' + screeningId).then((response) => {
+			// console.log(response.data);
+			if (response.status === 200) {
+				setScreening(response.data);
+				setColsAmount(calculateCols(response.data));
+			}
+		});
 	}, [screeningId]);
 
-	const calculateCols = (screening: ScreeningType) =>
-		Math.max(...screening.seats.map((seat) => seat.number));
+	const calculateCols = (screening: ScreeningType) => Math.max(...screening.seats.map((seat) => seat.number));
 
 	return (
 		<StaticGradientBg id='main'>
@@ -43,9 +36,7 @@ export default function Screening() {
 					<>
 						<div className='flex flex-col gap-2 border-b-2 border-magnolia m-6 pl-4'>
 							<div className='flex text-xl mb-4 ml-8 items-center '>
-								<h1 className='text-2xl font-semibold '>
-									{screening.movieId.title}
-								</h1>
+								<h1 className='text-2xl font-semibold '>{screening.movieId.title}</h1>
 								<p className='ml-8 pl-6 border-l-2 border-l-gray-400'>
 									{new Date(screening.date)
 										.toLocaleString()
@@ -55,9 +46,7 @@ export default function Screening() {
 										)}
 								</p>
 								<p className='ml-8 pl-6 border-l-2 border-l-gray-400'>
-									{screening.type +
-										' ' +
-										screeningSoundMap[screening.sound]}
+									{screening.type + ' ' + screeningSoundMap[screening.sound]}
 								</p>
 							</div>
 						</div>

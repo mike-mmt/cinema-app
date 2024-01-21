@@ -46,22 +46,13 @@ function App() {
 						<NavigationBar />
 						<Routes>
 							<Route path='/' element={<Home />} />
-							<Route
-								path='/repertoire'
-								element={<Repertoire />}
-							/>
+							<Route path='/repertoire' element={<Repertoire />} />
 							<Route path='/register' element={<Register />} />
 							<Route path='/login' element={<Login />} />
 							<Route path='/addmovie' element={<AddMovie />} />
 							<Route path='/movie/:movieId' element={<Movie />} />
-							<Route
-								path='/screening/:screeningId'
-								element={<Screening />}
-							/>
-							<Route
-								path='ordersummary'
-								element={<OrderSummary />}
-							/>
+							<Route path='/screening/:screeningId' element={<Screening />} />
+							<Route path='ordersummary' element={<OrderSummary />} />
 							<Route path='/order' element={<Order />} />
 							<Route path='/stats' element={<Stats />} />
 							<Route path='*' element={<NotFound />} />

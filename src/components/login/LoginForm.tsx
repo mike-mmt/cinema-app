@@ -25,9 +25,7 @@ export default function LoginForm() {
 		},
 		validationSchema: Yup.object({
 			email: Yup.string().email('Not a valid email').required('Wymagane'),
-			password: Yup.string()
-				.required('Wymagane')
-				.max(128, 'Maksymalnie 128 znaków'),
+			password: Yup.string().required('Wymagane').max(128, 'Maksymalnie 128 znaków'),
 		}),
 		onSubmit: (values) => {
 			logIn(values);
@@ -39,10 +37,7 @@ export default function LoginForm() {
 		try {
 			console.log(values);
 
-			const response = await axios.post(
-				import.meta.env.VITE_BACKEND_URL + '/login',
-				values,
-			);
+			const response = await axios.post(import.meta.env.VITE_BACKEND_URL + '/login', values);
 			if (response.status === 200 && response.data.token) {
 				setToken(response.data.token, response.data.isAdmin || false);
 				loginContext?.setLoggedIn(true);
@@ -78,34 +73,21 @@ export default function LoginForm() {
 
 	return (
 		<div className='flex flex-col items-center gap-16 max-h-fit w-full'>
-			<form
-				className='form flex gap-8 w-fit mt-8 ml-4'
-				onSubmit={formik.handleSubmit}
-			>
+			<form className='form flex gap-8 w-fit mt-8 ml-4' onSubmit={formik.handleSubmit}>
 				<div className='input-field flex flex-col'>
 					<label className='' htmlFor='email'>
 						E-mail
 					</label>
-					<input
-						id='email'
-						type='email'
-						{...formik.getFieldProps('email')}
-					/>
+					<input id='email' type='email' {...formik.getFieldProps('email')} />
 					{formik.touched.email && formik.errors.email ? (
 						<div className='formikError'>{formik.errors.email}</div>
 					) : null}
 				</div>
 				<div className='input-field flex flex-col'>
 					<label htmlFor='password'>Hasło</label>
-					<input
-						id='password'
-						type='password'
-						{...formik.getFieldProps('password')}
-					/>
+					<input id='password' type='password' {...formik.getFieldProps('password')} />
 					{formik.touched.password && formik.errors.password ? (
-						<div className='formikError'>
-							{formik.errors.password}
-						</div>
+						<div className='formikError'>{formik.errors.password}</div>
 					) : null}
 				</div>
 			</form>

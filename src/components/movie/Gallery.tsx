@@ -12,13 +12,7 @@ type Props = {
 	movieId: string;
 };
 
-export default function Gallery({
-	movie,
-	showAddPhoto,
-	setShowAddPhoto,
-	setContentHasChanged,
-	movieId,
-}: Props) {
+export default function Gallery({ movie, showAddPhoto, setShowAddPhoto, setContentHasChanged, movieId }: Props) {
 	const adminContext = useContext(AdminContext);
 	return (
 		<>
@@ -44,9 +38,7 @@ export default function Gallery({
 						+
 					</p>
 				)}
-				{showAddPhoto && (
-					<AddPhoto setShow={setShowAddPhoto} movieId={movieId} />
-				)}
+				{showAddPhoto && <AddPhoto setShow={setShowAddPhoto} movieId={movieId} />}
 			</div>
 		</>
 	);

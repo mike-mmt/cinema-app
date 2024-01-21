@@ -7,12 +7,7 @@ type Props = {
 	onClick?: (e: React.MouseEvent) => void;
 };
 
-export default function Seat({
-	children,
-	seatColor,
-	className,
-	onClick,
-}: Props) {
+export default function Seat({ children, seatColor, className, onClick }: Props) {
 	return (
 		<div
 			className={
