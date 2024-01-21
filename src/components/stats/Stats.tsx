@@ -29,7 +29,7 @@ const reducer = (state: StatsState, action: ActionType) => {
 								? SortOrder.ASC
 								: SortOrder.DESC,
 						// eslint-disable-next-line no-mixed-spaces-and-tabs
-					}
+				  }
 				: state;
 		default:
 			return state;

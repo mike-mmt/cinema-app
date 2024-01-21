@@ -18,6 +18,7 @@ import OrderSummary from './components/ordersummary/OrderSummary';
 import Order from './components/ordersummary/Order';
 import Stats from './components/stats/Stats';
 import NotFound from './components/NotFound';
+import Account from './components/account/Account';
 
 function App() {
 	const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -55,11 +56,8 @@ function App() {
 							<Route path='ordersummary' element={<OrderSummary />} />
 							<Route path='/order' element={<Order />} />
 							<Route path='/stats' element={<Stats />} />
+							<Route path='/account' element={<Account />} />
 							<Route path='*' element={<NotFound />} />
-							{/* <Route path="/about" element={<About />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/contact" element={<Contact />} /> */}
 						</Routes>
 					</PricesContext.Provider>
 				</AdminContext.Provider>

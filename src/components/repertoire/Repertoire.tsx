@@ -27,13 +27,16 @@ interface ActionType {
 	type: string;
 	payload: MovieType[] | ScreeningType[];
 }
+interface MovieCountType {
+	all: number;
+	currentlyScreening: number;
+	notCurrentlyScreening: number;
+}
 
 function reducer(state: MovieType[], action: ActionType): MovieType[] {
 	switch (action.type) {
 		case 'set':
 			return action.payload as MovieType[];
-		// case 'sort':
-		// return state;
 		case 'setScreenings':
 			return state.map((movie) => {
 				movie.screenings = (action.payload as ScreeningType[]).filter(
@@ -50,6 +53,11 @@ export default function Repertoire() {
 	const [state, dispatch] = useReducer<(state: MovieType[], action: ActionType) => MovieType[]>(reducer, []);
 	const adminContext = useContext(AdminContext);
 	const [startDate, setStartDate] = useState(new Date());
+	const [movieCount, setMovieCount] = useState<MovieCountType>({
+		all: 0,
+		currentlyScreening: 0,
+		notCurrentlyScreening: 0,
+	});
 
 	useEffect(() => {
 		axios.get(import.meta.env.VITE_BACKEND_URL + '/movies').then((response) => {
@@ -61,7 +69,13 @@ export default function Repertoire() {
 			};
 			dispatch(dispatchBody);
 		});
+		adminContext?.isAdmin && fetchMovieCount();
 	}, []);
+
+	const fetchMovieCount = async () => {
+		const response = await axios.get(import.meta.env.VITE_BACKEND_URL + '/movies/count');
+		response.status === 200 && setMovieCount(response.data);
+	};
 
 	const handleFetchScreenings = async () => {
 		const response = await fetchScreenings(
@@ -88,7 +102,21 @@ export default function Repertoire() {
 		<StaticGradientBg styles='flex justify-center bg-fixed'>
 			{/* <div className="background-all h-screen "> */}
 			<div className='movies-wrapper w-11/12 flex flex-col items-center mt-8'>
-				{adminContext?.isAdmin && <LinkButton link='/addmovie' text='Dodaj nowy film' styles='mb-5' />}
+				{adminContext?.isAdmin && (
+					<div className='adminThings flex gap-4 items-center'>
+						{
+							<>
+								<p>Ilość filmów:</p>
+								<p>{movieCount.all}</p>
+								<p>Aktywnych:</p>
+								<p>{movieCount.currentlyScreening}</p>
+								<p>Nieaktywnych:</p>
+								<p>{movieCount.notCurrentlyScreening}</p>
+							</>
+						}
+						<LinkButton link='/addmovie' text='Dodaj nowy film' styles='mb-5' />
+					</div>
+				)}
 				<h1 className='text-4xl font-semibold w-full text-center pb-4 border-b-2 border-b-outer-space-half'>
 					Repertuar
 				</h1>

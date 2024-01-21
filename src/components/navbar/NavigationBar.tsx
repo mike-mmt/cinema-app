@@ -32,6 +32,7 @@ export default function NavigationBar() {
 							Statystyki sprzedaży
 						</button>
 					)}
+					<LinkButton link='/account' text='Moje konto' />
 					<div className='mr-8' onClick={() => logOut(loginContext.setLoggedIn, adminContext?.setIsAdmin)}>
 						<LinkButton link='/' text='Wyloguj się' />
 					</div>
