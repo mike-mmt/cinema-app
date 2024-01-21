@@ -83,6 +83,7 @@ router.get("/:movieId", async (req, res, next) => {
       .exec();
     res.status(200).json(movie[0]);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 });
@@ -92,25 +93,19 @@ router.post(
   [uploadSingle, verifyJWT, verifyAdmin], // middleware
   async (req, res, next) => {
     try {
-      console.log(req.body);
       req.body.genres = JSON.parse(req.body.genres);
       req.body.actors = JSON.parse(req.body.actors);
       req.body.year = parseInt(req.body.year);
       const validation = validateMovieData(req.body);
-      console.log(req.file);
-
       if ((!req.file && !req.body.photoUrl) || !validation) {
         return res.status(400).json({ message: "invalid form data" });
       }
-
       let photo;
       if (req.body.photoUrl) {
         photo = await newPhotoFromUrl(req.body.photoUrl);
       } else if (req.file) {
         photo = await newPhotoFromFile(req.file);
       }
-      console.log(photo);
-
       const newMovie = new Movie({
         ...req.body,
         mainPhotoId: photo,
@@ -132,7 +127,6 @@ router.delete("/:movieId", [verifyJWT, verifyAdmin], async (req, res, next) => {
   try {
     const movieId = req.params.movieId;
     const deleteQuery = await Movie.findByIdAndDelete(movieId).exec();
-    console.log(deleteQuery._doc);
     const deleteScreenings = await Screening.deleteMany()
       .where("movieId")
       .equals(movieId)
@@ -140,6 +134,7 @@ router.delete("/:movieId", [verifyJWT, verifyAdmin], async (req, res, next) => {
     const deletePhotoQuery = await deletePhoto(deleteQuery._doc.mainPhotoId);
     return res.status(200).json({ message: "success", deleteQuery });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 });
@@ -199,6 +194,7 @@ router.patch(
       );
       return res.status(200).json({ message: "success", update });
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }

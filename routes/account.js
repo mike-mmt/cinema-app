@@ -6,17 +6,21 @@ const { default: mongoose } = require("mongoose");
 
 router.get("/", verifyJWT, async (req, res, next) => {
   try {
-    const account = Account.aggregate()
-      .match({ _id: new mongoose.Types.ObjectId(req.user.id) })
-      .lookup({
-        from: "orders",
-        localField: "orders",
-        foreignField: "_id",
-        as: "orders",
+    const account = await Account.findById(req.user.id)
+      .populate({
+        path: "orders",
+        populate: {
+          path: "screeningId",
+          populate: { path: "movieId", select: "title" },
+          select: "_id date movieId sound type",
+        },
+        select: "_id paid price screeningId seats",
       })
+      .select("firstName lastName email isAdmin orders")
       .exec();
     return res.status(200).json(account);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 });

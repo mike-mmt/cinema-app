@@ -3,6 +3,7 @@ const router = express.Router();
 const Movie = require("../models/Movie");
 const Screening = require("../models/Screening");
 const verifyJWT = require("../utils/verify-jwt-middleware");
+const verifyAdmin = require("../utils/verify-admin");
 
 router.get("/", verifyJWT, async (req, res, next) => {
   try {
@@ -73,8 +74,32 @@ router.get("/", verifyJWT, async (req, res, next) => {
 
     return res.status(200).json(allMovies);
   } catch (error) {
+    console.log(error);
     next(error);
   }
+});
+
+router.get("/count", [verifyJWT, verifyAdmin], async (req, res, next) => {
+  try {
+    const count = await Movie.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalMovies: { $sum: 1 },
+          currentlyScreening: {
+            $sum: {
+              $cond: [{ $eq: ["$isCurrentlyScreening", true] }, 1, 0],
+            },
+          },
+        },
+      },
+    ]).exec();
+    return res.status(200).json({
+      all: count[0].totalMovies,
+      currentlyScreening: count[0].currentlyScreening,
+      notCurrentlyScreening: count[0].totalMovies - count[0].currentlyScreening,
+    });
+  } catch (error) {}
 });
 
 module.exports = router;

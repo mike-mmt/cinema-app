@@ -38,6 +38,7 @@ router.post("/", async (req, res, next) => {
     await account.save();
     res.status(201).json({ message: "success" });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 });

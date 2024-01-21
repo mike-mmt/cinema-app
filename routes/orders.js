@@ -116,6 +116,7 @@ router.get("/stats", [verifyJWT, verifyAdmin], async (req, res, next) => {
     ]).exec();
     return res.status(200).json(orders[0]);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 });
@@ -179,13 +180,14 @@ router.post("/", verifyJWT, async (req, res, next) => {
         },
       }
     ).exec();
-    const updatedAccount = await Account.findByIdAndUpdate(req.body.userId, {
+    const updatedAccount = await Account.findByIdAndUpdate(req.user.id, {
       $push: {
         orders: newOrder._id,
       },
     }).exec();
     return res.status(200).json(newOrder);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 });

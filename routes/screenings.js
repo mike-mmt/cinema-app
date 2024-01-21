@@ -13,18 +13,6 @@ const Account = require("../models/Account");
 
 router.get("/", async (req, res, next) => {
   try {
-    // let year, month, day;
-    // if (req.query.date) {
-    //   console.log(req.query.date);
-    //   [year, month, day] = req.query.date.split("-");
-    //   month = month - 1;
-    //   day = day - 1;
-    // }
-    // const {from, to} = req.query;
-
-    // const threeHoursBefore = new Date();
-    // threeHoursBefore.setHours(threeHoursBefore.getHours() - 3); // -3hrs to show ongoing screenings as well
-
     let query = Screening.find();
     if (req.query.movieId) {
       query = query.where("movieId").equals(req.query.movieId);
@@ -42,6 +30,7 @@ router.get("/", async (req, res, next) => {
 
     return res.status(200).json(screenings);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 });
@@ -53,6 +42,7 @@ router.get("/:screeningId", verifyJWT, async (req, res, next) => {
       .exec();
     return res.status(200).json(screening);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 });
@@ -60,7 +50,6 @@ router.get("/:screeningId", verifyJWT, async (req, res, next) => {
 router.post("/", [verifyJWT, verifyAdmin], async (req, res, next) => {
   try {
     const { movieId, type, sound } = req.body;
-    // console.log(req.body);
     const date = new Date(req.body.date);
     const rows = "ABCDEFGHIJKL";
     const seats_in_a_row = 16;
@@ -84,6 +73,7 @@ router.post("/", [verifyJWT, verifyAdmin], async (req, res, next) => {
     });
     return res.status(201).json({ message: "success", screening });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 });
@@ -121,6 +111,7 @@ router.post("/multiple", [verifyJWT, verifyAdmin], async (req, res, next) => {
       .status(201)
       .json({ message: "success", screenings: screeningsQuery });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 });
