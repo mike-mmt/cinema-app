@@ -11,7 +11,7 @@ function verifyJWT(req, res, next) {
           console.log(err);
           return res.status(401).json({
             isLoggedIn: false,
-            message: "Authentication failure",
+            message: "authentication failure",
           });
         }
         req.user = {};
@@ -20,7 +20,7 @@ function verifyJWT(req, res, next) {
         next();
       });
     } else {
-      res.status(401).json({ message: "Incorrect token", isLoggedIn: false });
+      res.status(401).json({ message: "incorrect token", isLoggedIn: false });
     }
   }
 }

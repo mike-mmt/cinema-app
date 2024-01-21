@@ -14,12 +14,12 @@ function verifyAdmin(req, res, next) {
         } else {
           return res
             .status(403)
-            .json({ message: "Access denied - not an admin" });
+            .json({ message: "access denied - not an admin" });
         }
       })
       .catch((error) => {
         console.log(error);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "internal server error" });
       });
   }
 }

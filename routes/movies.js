@@ -13,7 +13,6 @@ router.get("/", verifyJWT, async (req, res, next) => {
       day = day - 1;
     }
     const allMovies = await Movie.aggregate()
-      .match({ isCurrentlyScreening: true })
       .lookup({
         from: "photos",
         localField: "mainPhotoId",
@@ -52,6 +51,7 @@ router.get("/", verifyJWT, async (req, res, next) => {
         ],
         as: "screenings",
       })
+      .sort({ _id: -1 })
       .project({
         title: 1,
         year: 1,
@@ -67,6 +67,7 @@ router.get("/", verifyJWT, async (req, res, next) => {
             in: "$$photo.url",
           },
         },
+        isCurrentlyScreening: 1,
       })
       .exec();
 

@@ -19,7 +19,7 @@ const upload = multer({ storage });
 router.post("/", upload.single("image"), (req, res) => {
   // Check if file is present
   if (!req.file) {
-    return res.status(400).json({ error: "No file uploaded" });
+    return res.status(400).json({ message: "no file uploaded" });
   }
 
   // Convert buffer to data url
@@ -29,7 +29,7 @@ router.post("/", upload.single("image"), (req, res) => {
   // Upload file to cloudinary
   cloudinary.uploader.upload(fileDataUrl, (error, result) => {
     if (error) {
-      return res.status(500).json({ error: "Failed to upload file" });
+      return res.status(500).json({ error: "failed to upload file" });
     }
 
     // Return the cloudinary URL of the uploaded image

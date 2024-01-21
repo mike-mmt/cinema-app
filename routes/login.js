@@ -43,7 +43,7 @@ router.post("/", async (req, res, next) => {
       );
     } else {
       return res.status(400).json({
-        message: "Invalid email or password",
+        message: "invalid email or password",
       });
     }
   } catch (error) {

@@ -58,7 +58,7 @@ router.get("/:movieId", async (req, res, next) => {
         pipeline: [
           datePipelineMatch,
           {
-            $project: { _id: 0, movieId: 0 },
+            $project: { movieId: 0 },
           },
         ],
         as: "screenings",
@@ -100,7 +100,7 @@ router.post(
       console.log(req.file);
 
       if ((!req.file && !req.body.photoUrl) || !validation) {
-        return res.status(400).json({ error: "invalid form data" });
+        return res.status(400).json({ message: "invalid form data" });
       }
 
       let photo;

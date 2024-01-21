@@ -42,9 +42,19 @@ router.get("/stats", [verifyJWT, verifyAdmin], async (req, res, next) => {
         },
       },
       {
+        $lookup: {
+          from: "movies",
+          localField: "movieId",
+          foreignField: "_id",
+          as: "movie",
+          pipeline: [{ $project: { title: 1, _id: 1 } }],
+        },
+      },
+      {
         $group: {
           _id: "$movieId",
           totalPerMovie: { $sum: "$totalPerScreening" },
+          movie: { $first: "$movie" },
           screenings: {
             $push: {
               screeningId: "$_id",
@@ -59,16 +69,52 @@ router.get("/stats", [verifyJWT, verifyAdmin], async (req, res, next) => {
           total: { $sum: "$totalPerMovie" },
           movies: {
             $push: {
-              movieId: "$_id",
-              total: "$totalPerMovie",
+              movie: { $first: "$movie" },
+              totalPerMovie: "$totalPerMovie",
               screenings: "$screenings",
             },
           },
         },
       },
-      { $project: { _id: 0 } },
+      // {
+      //   $group: {
+      //     _id: "$movieId",
+      //     totalPerMovie: { $sum: "$totalPerScreening" },
+      //     screenings: {
+      //       $push: {
+      //         screeningId: "$_id",
+      //         total: "$totalPerScreening",
+      //       },
+      //     },
+      //   },
+      // },
+      // {
+      //   $group: {
+      //     _id: null,
+      //     total: { $sum: "$totalPerMovie" },
+      //     movies: {
+      //       $push: {
+      //         movieId: "$_id",
+      //         total: "$totalPerMovie",
+      //         screenings: "$screenings",
+      //       },
+      //     },
+      //   },
+      // },
+      {
+        $project: {
+          _id: 0,
+          total: 1,
+          movies: 1,
+          // {
+          //   movie: { $first: "$movies.movie" },
+          //   totalPerMovie: 1,
+          //   screenings: 1,
+          // },
+        },
+      },
     ]).exec();
-    return res.status(200).json(orders);
+    return res.status(200).json(orders[0]);
   } catch (error) {
     next(error);
   }
@@ -84,7 +130,7 @@ router.post("/", verifyJWT, async (req, res, next) => {
       return screeningSeat && !screeningSeat.taken;
     });
     if (!validSeats) {
-      return res.status(400).json({ error: "seats occupied or invalid" });
+      return res.status(400).json({ message: "seats occupied or invalid" });
     }
     const finalPrice = req.body.seats.reduce((acc, seat) => {
       return acc + retrievePrice(seat.class);

@@ -60,7 +60,7 @@ router.get("/:screeningId", verifyJWT, async (req, res, next) => {
 router.post("/", [verifyJWT, verifyAdmin], async (req, res, next) => {
   try {
     const { movieId, type, sound } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     const date = new Date(req.body.date);
     const rows = "ABCDEFGHIJKL";
     const seats_in_a_row = 16;
