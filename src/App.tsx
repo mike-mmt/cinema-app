@@ -31,10 +31,10 @@ function App() {
 	useEffect(() => {
 		axios.get(import.meta.env.VITE_BACKEND_URL + '/prices').then((res) => {
 			if (res.status === 200) {
-				console.log(res.data);
+				// console.log(res.data);
 
 				prices.current = res.data;
-				console.log(prices.current);
+				// console.log(prices.current);
 			}
 		});
 	}, []);

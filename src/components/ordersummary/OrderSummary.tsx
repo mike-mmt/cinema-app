@@ -85,7 +85,7 @@ export default function OrderSummary() {
 						</div>
 
 						<p className='ml-6 text-lg'>
-							Suma: {calculateOrderSum()} zł
+							Suma: {calculateOrderSum().toFixed(2)} zł
 						</p>
 					</div>
 					<div className='flex gap-12 justify-around'>

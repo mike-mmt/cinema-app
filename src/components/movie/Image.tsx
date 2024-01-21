@@ -60,7 +60,7 @@ export default function Image({
 			</div>
 
 			{fullScreen && (
-				<div className='fixed flex justify-center items-center inset-0 h-[90vh] z-50 mt-2'>
+				<div className='fixed flex justify-center items-center inset-0 h-[90vh] z-50 mt-2  hover:cursor-pointer'>
 					<img
 						src={src}
 						className='h-full'

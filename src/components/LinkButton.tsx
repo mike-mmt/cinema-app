@@ -9,7 +9,7 @@ export default function LinkButton({ styles, link, text }: Props) {
 	return (
 		<Link
 			to={link}
-			className={`bg-outer-space text-magnolia min-h-10 min-w-32 rounded flex justify-center items-center align-middle duration-150 active:bg-transparent active:border-2 active:border-magnolia${
+			className={`bg-outer-space text-magnolia min-h-10 min-w-32 rounded flex justify-center items-center align-middle duration-150 active:bg-transparent active:border-2 active:border-magnolia active:text-rosered${
 				styles ? ' ' + styles : ''
 			}`}
 		>

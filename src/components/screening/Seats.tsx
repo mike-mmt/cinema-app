@@ -128,7 +128,7 @@ export default function Seats({ screening, colsAmount }: Props) {
 								{seat.row + ' ' + seat.number}
 							</Seat>
 						))}
-						<p>Suma: {calculateOrderSum()} zł</p>
+						<p>Suma: {calculateOrderSum().toFixed(2)} zł</p>
 					</div>
 				)}
 				<button

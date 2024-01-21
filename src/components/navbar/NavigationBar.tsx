@@ -15,7 +15,10 @@ export default function NavigationBar() {
 		<div className='navbar z-50 bg-black flex p-1 justify-between items-center w-full h-20'>
 			<div className='m-6 flex items-center gap-10'>
 				<Logo />
-				<Link to={'/repertoire'} className='text-outer-space'>
+				<Link
+					to={'/repertoire'}
+					className='text-outer-space hover:text-magnolia transition-colors duration-100 active:text-rosered'
+				>
 					Repertuar
 				</Link>
 			</div>
@@ -23,7 +26,7 @@ export default function NavigationBar() {
 				<div className='flex items-center gap-4'>
 					{adminContext?.isAdmin && (
 						<button
-							className='bg-rosered text-magnolia min-h-10 min-w-48 rounded flex justify-center items-center align-middle duration-150 active:bg-transparent active:border-2 active:border-magnolia'
+							className='bg-rosered text-magnolia min-h-10 min-w-48 rounded flex justify-center items-center align-middle duration-150 active:bg-transparent active:border-2 active:border-magnolia active:text-rosered'
 							onClick={() => navigate('/stats')}
 						>
 							Statystyki sprzedaży

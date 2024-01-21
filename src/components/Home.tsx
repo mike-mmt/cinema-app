@@ -22,7 +22,7 @@ export default function Home() {
 							<LinkButton
 								link='/repertoire'
 								text='Repertuar'
-								styles='min-h-20 min-w-48 text-xl bg-outer-space-half'
+								styles='min-h-20 min-w-48 text-xl bg-outer-space-half hover:bg-outer-space-quarter transition-colors duration-100'
 							/>
 						</>
 					) : (

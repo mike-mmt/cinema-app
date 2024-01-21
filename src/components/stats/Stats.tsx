@@ -278,8 +278,8 @@ export default function Stats() {
 									fetchYearStats(date);
 								}}
 								className='cursor-pointer bg-transparent py-2 w-full border-b-2 border-rosered text-center text-xl font-semibold focus:outline focus:outline-rosered'
-								dateFormat='MM/yyyy'
-								showMonthYearPicker
+								dateFormat='yyyy'
+								showYearPicker
 							/>
 						</GridItem>
 						<GridItem className='col-start-5 row-start-1'>
@@ -337,16 +337,16 @@ export default function Stats() {
 										</p>
 									</GridItem>
 									<GridItem className='col-start-2'>
-										<p>{movie.dayTotal} zł</p>
+										<p>{movie.dayTotal.toFixed(2)} zł</p>
 									</GridItem>
 									<GridItem className='col-start-3'>
-										<p>{movie.monthTotal} zł</p>
+										<p>{movie.monthTotal.toFixed(2)} zł</p>
 									</GridItem>
 									<GridItem className='col-start-4'>
-										<p>{movie.yearTotal} zł</p>
+										<p>{movie.yearTotal.toFixed(2)} zł</p>
 									</GridItem>
 									<GridItem className='col-start-5'>
-										<p>{movie.allTotal} zł</p>
+										<p>{movie.allTotal.toFixed(2)} zł</p>
 									</GridItem>
 								</GridMovieRow>
 							))}

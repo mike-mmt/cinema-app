@@ -33,7 +33,7 @@ export default function Gallery({
 						setHasChanged={setContentHasChanged}
 						src={photoUrl}
 						movieId={movieId || ''}
-						className='h-48'
+						className='h-48  hover:cursor-pointer'
 					/>
 				))}
 				{adminContext?.isAdmin && (
