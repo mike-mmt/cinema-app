@@ -1,0 +1,154 @@
+/* SCSS HEX */
+body {
+	background-color: black;
+	color: #fff6ff;
+	margin: 0;
+	padding: 0;
+	font-family: 'Josefin Sans', sans-serif;
+	font-weight: 500;
+	height: 100vh;
+}
+
+.main-home {
+	position: relative;
+	width: 100%;
+}
+
+.black-background {
+	background-color: black;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vw;
+}
+
+.gradient-first-layer {
+	opacity: 0;
+	background: linear-gradient(0deg, black, #222b30);
+	animation-name: fade-in-first-layer;
+	animation-delay: 7.5s;
+	animation-duration: 1ms;
+	animation-fill-mode: forwards;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	min-height: 20em;
+}
+
+.gradient-loop {
+	opacity: 0;
+	background: linear-gradient(0deg, black, #cc2d57);
+	animation-name: fade-loop;
+	animation-timing-function: ease-in-out;
+	animation-iteration-count: infinite;
+	animation-delay: 1s;
+	animation-duration: 15s;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	min-height: 20em;
+}
+
+@keyframes fade-in-first-layer {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+@keyframes fade-loop {
+	0% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+.background-all {
+	background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 70%),
+		linear-gradient(90deg, rgb(34, 43, 48) 44%, rgb(204, 45, 87) 100%);
+}
+
+.form input {
+	border: none;
+	background-color: transparent;
+	border-bottom: 2px solid #fff6ff;
+	transition-duration: 150ms;
+}
+.form input:focus {
+	outline: none;
+	border-bottom-color: #cc2d57;
+}
+.form label {
+	pointer-events: none;
+	bottom: 10px;
+	font-size: 16px;
+	transition: all 0.3s ease;
+}
+
+.form-button {
+	border: none;
+	border-bottom: 2px solid #fff6ff;
+	transition-duration: 150ms;
+}
+.form-button:hover {
+	color: #cc2d57;
+}
+.form-button:focus {
+	color: #cc2d57;
+	outline: none;
+}
+
+.formikError {
+	color: #cd2d40;
+}
+
+/* #root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+} */ /*# sourceMappingURL=App.css.map */

@@ -1,0 +1,210 @@
+/* SCSS HEX */
+$black: #000000ff;
+$crimson: #cd2d40ff;
+$rosered: #cc2d57;
+$magnolia: #fff6ffff;
+$outer-space: #637681; //#45555eff;
+$gunmetal: #222b30ff;
+$outer-space-half: #63768178;
+$outer-space-quarter: #63768137;
+$outer-space-8th: #6376811e;
+$gunmetal-half: #222b3078;
+
+body {
+	background-color: $black;
+	color: $magnolia;
+	margin: 0;
+	padding: 0;
+	font-family: 'Josefin Sans', sans-serif;
+	font-weight: 500;
+	// background-color: #242424;
+	// background: linear-gradient(0deg, $black, $rosered, $black);
+	// background-size: 400% 400%;
+	// animation: gradient 15s ease infinite;
+	height: 100vh;
+}
+.main-home {
+	position: relative;
+	width: 100%;
+}
+.black-background {
+	background-color: $black;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vw;
+}
+
+$anim-duration: 15s;
+.gradient-first-layer {
+	opacity: 0;
+	background: linear-gradient(0deg, $black, $gunmetal);
+	animation-name: fade-in-first-layer;
+	// animation-timing-function: ease-in-out;
+	// animation-iteration-count: 1;
+	animation-delay: calc($anim-duration/2);
+	animation-duration: 1ms;
+	animation-fill-mode: forwards;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	min-height: 20em;
+}
+.gradient-loop {
+	opacity: 0;
+	background: linear-gradient(0deg, $black, $rosered);
+	animation-name: fade-loop;
+	animation-timing-function: ease-in-out;
+	animation-iteration-count: infinite;
+	animation-delay: 1s;
+	animation-duration: $anim-duration;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	min-height: 20em;
+}
+
+@keyframes fade-in-first-layer {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes fade-loop {
+	0% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+.background-all {
+	background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 70%),
+		linear-gradient(90deg, rgba(34, 43, 48, 1) 44%, rgba(204, 45, 87, 1) 100%);
+}
+
+.form {
+	input {
+		border: none;
+		background-color: transparent;
+		border-bottom: 2px solid $magnolia;
+		transition-duration: 150ms;
+		&:focus {
+			outline: none;
+			border-bottom-color: $rosered;
+		}
+	}
+	label {
+		// position: absolute;
+		pointer-events: none;
+		bottom: 10px;
+		font-size: 16px;
+		transition: all 0.3s ease;
+	}
+}
+.form-button {
+	border: none;
+	border-bottom: 2px solid $magnolia;
+	transition-duration: 150ms;
+	&:hover {
+		color: $rosered;
+	}
+	&:focus {
+		color: $rosered;
+		outline: none;
+	}
+}
+.formikError {
+	color: $crimson;
+}
+// .react-datepicker__input-time-container {
+// 	input {
+// 		background-color: $gunmetal-half;
+// 		font-size: 1.25em;
+// 		padding: 0.25em;
+// 		color: $magnolia;
+// 	}
+// }
+// .date-picker-wrapper {
+// 	input {
+// 		background-color: $gunmetal-half;
+// 		color: $magnolia;
+// 	}
+// }
+
+// .movies-grid {
+//   display: grid;
+//   width: 100%;
+//   grid-template-columns: 1fr 1fr;
+//   grid-auto-flow: column;
+//   gap: 2em;
+// }
+// .grid-item img {
+//   overflow: hidden;
+//   width: 80%;
+// }
+// .main-home {
+//   background: linear-gradient($black, #ca0054, $gunmetal);
+//   background-size: 400% 400%;
+//   animation: gradient 15s ease infinite;
+//   // animation-name: gradient;
+//   // animation-duration: 15s;
+//   // animation-iteration-count: infinite;
+//   // height: 100vh;
+//   // animation-name: gradient-anim;
+//   // animation-duration: 5s;
+//   // animation-iteration-count: infinite;
+// }
+
+/* #root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+} */
