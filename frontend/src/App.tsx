@@ -19,6 +19,7 @@ import Order from './components/ordersummary/Order';
 import Stats from './components/stats/Stats';
 import NotFound from './components/NotFound';
 import Account from './components/account/Account';
+import Chat from './components/Chat';
 
 function App() {
 	const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -58,6 +59,7 @@ function App() {
 							<Route path='/stats' element={<Stats />} />
 							<Route path='/account' element={<Account />} />
 							<Route path='*' element={<NotFound />} />
+							<Route path='chat' element={<Chat />} />
 						</Routes>
 					</PricesContext.Provider>
 				</AdminContext.Provider>

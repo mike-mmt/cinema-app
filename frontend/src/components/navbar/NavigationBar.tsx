@@ -21,6 +21,12 @@ export default function NavigationBar() {
 				>
 					Repertuar
 				</Link>
+				<Link
+					to={'/chat'}
+					className='text-outer-space hover:text-magnolia transition-colors duration-100 active:text-rosered'
+				>
+					Czat
+				</Link>
 			</div>
 			{loginContext?.loggedIn ? (
 				<div className='flex items-center gap-4'>
