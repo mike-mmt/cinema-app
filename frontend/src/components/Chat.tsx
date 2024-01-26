@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import GrayContentWrapper from './GrayContentWrapper';
 
-import mqtt from 'mqtt';
 import axios from 'axios';
+import mqtt from 'mqtt';
 
 interface mqttMessage {
 	author: string;
@@ -16,7 +16,22 @@ export default function Chat() {
 	const clientRef = useRef<mqtt.MqttClient>();
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 
+	const mqttMessageHandler = (topic: string, message: Buffer) => {
+		// message is Buffer
+		switch (topic) {
+			case 'omnicinema/chat':
+				setMessages((prevMessages) => [...prevMessages, JSON.parse(message.toString())]);
+				break;
+
+			default:
+				break;
+		}
+	};
+
 	useEffect(() => {
+		// mqttClientContext?.current?.subscribe(['omnicinema/chat']);
+
+		// mqttClientContext?.current?.on('message', mqttMessageHandler);
 		const client = mqtt.connect('ws://localhost:8000/mqtt');
 		clientRef.current = client;
 
@@ -28,19 +43,7 @@ export default function Chat() {
 					client.publish('presence', 'Hello mqtt');
 				}
 			});
-		});
-
-		client.on('message', (topic, message) => {
-			// message is Buffer
-			switch (topic) {
-				case 'omnicinema/chat':
-					setMessages((prevMessages) => [...prevMessages, JSON.parse(message.toString())]);
-
-					break;
-
-				default:
-					break;
-			}
+			client.on('message', mqttMessageHandler);
 		});
 
 		axios.get(import.meta.env.VITE_BACKEND_URL + '/account').then((response) => {
@@ -49,8 +52,10 @@ export default function Chat() {
 			response.status === 200 && setName(response.data.firstName + ' ' + response.data.lastName);
 		});
 
-		// Clean up the connection when the component unmounts
 		return () => {
+			// mqttClientContext?.current?.unsubscribe(['omnicinema/chat']);
+			// mqttClientContext?.current?.removeListener('message', mqttMessageHandler);
+			client.removeAllListeners();
 			client.end();
 		};
 	}, []);
@@ -61,6 +66,7 @@ export default function Chat() {
 			author: name,
 			message: messageInput,
 		});
+		// mqttClientContext?.current?.publish('omnicinema/chat', jsonMessage);
 		clientRef.current?.publish('omnicinema/chat', jsonMessage);
 		setMessageInput('');
 		return;
@@ -72,7 +78,7 @@ export default function Chat() {
 	return (
 		<GrayContentWrapper>
 			<div className='flex flex-col gap-4'>
-				<div className='h-48 m-6 flex flex-col overflow-y-scroll *:border-b *:border-gray-600'>
+				<div className='h-48 m-6 flex flex-col overflow-y-scroll *:border-b *:border-gray-600 border-2 border-outer-space rounded-md'>
 					{messages.map((message, index) => (
 						<span key={index} className='flex gap-2'>
 							<p className='text-gray-400'>{message.author}:</p>

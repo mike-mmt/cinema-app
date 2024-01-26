@@ -20,17 +20,18 @@ import Stats from './components/stats/Stats';
 import NotFound from './components/NotFound';
 import Account from './components/account/Account';
 import Chat from './components/Chat';
+// import mqtt from 'mqtt';
+// import { MqttClientContext } from './contexts/MqttClientContext';
 
 function App() {
 	const [loggedIn, setLoggedIn] = useState<boolean>(false);
 	const [isAdmin, setIsAdmin] = useState<boolean>(false);
 	const prices = useRef<PricesType | undefined>(undefined);
+	// const clientRef = useRef<mqtt.MqttClient>();
 
 	useEffect(() => {
 		getTokenIfExists(setLoggedIn, setIsAdmin);
-	}, []);
 
-	useEffect(() => {
 		axios.get(import.meta.env.VITE_BACKEND_URL + '/prices').then((res) => {
 			if (res.status === 200) {
 				// console.log(res.data);
@@ -39,12 +40,27 @@ function App() {
 				// console.log(prices.current);
 			}
 		});
+
+		// const client = mqtt.connect('ws://localhost:8000/mqtt');
+		// clientRef.current = client;
+
+		// client.on('connect', () => {
+		// 	console.log('connected');
+
+		// 	client.subscribe(['omnicinema/chat'], (err) => {
+		// 		if (!err) {
+		// 			client.publish('presence', 'Hello mqtt');
+		// 		}
+		// 	});
+		// });
 	}, []);
+
 	return (
 		<div className='flex flex-col'>
 			<LoginContext.Provider value={{ loggedIn, setLoggedIn }}>
 				<AdminContext.Provider value={{ isAdmin, setIsAdmin }}>
 					<PricesContext.Provider value={prices}>
+						{/* <MqttClientContext.Provider value={clientRef}> */}
 						<NavigationBar />
 						<Routes>
 							<Route path='/' element={<Home />} />
@@ -61,6 +77,7 @@ function App() {
 							<Route path='*' element={<NotFound />} />
 							<Route path='chat' element={<Chat />} />
 						</Routes>
+						{/* </MqttClientContext.Provider> */}
 					</PricesContext.Provider>
 				</AdminContext.Provider>
 			</LoginContext.Provider>
