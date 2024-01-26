@@ -14,6 +14,7 @@ import YoutubeEmbed from './YoutubeEmbed';
 import AddTrailer from './AddTrailer';
 import { getYoutubeEmbedFromUrl } from '../../utils/getYoutubeEmbed';
 import Gallery from './Gallery';
+import Comments from './Comments';
 
 export default function Movie() {
 	const { movieId } = useParams();
@@ -164,6 +165,7 @@ export default function Movie() {
 						setContentHasChanged={setContentHasChanged}
 					/>
 				)}
+				{movie && movieId && <Comments movieId={movieId} />}
 			</div>
 		</StaticGradientBg>
 	);

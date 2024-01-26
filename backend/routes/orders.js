@@ -6,6 +6,7 @@ const verifyAdmin = require("../utils/verify-admin");
 const Screening = require("../models/Screening");
 const retrievePrice = require("../utils/retrieve-price");
 const Account = require("../models/Account");
+const mqttClient = require("../mqtt-client");
 
 router.get("/stats", [verifyJWT, verifyAdmin], async (req, res, next) => {
   try {
@@ -185,6 +186,14 @@ router.post("/", verifyJWT, async (req, res, next) => {
         orders: newOrder._id,
       },
     }).exec();
+    // console.log(mqttClient);
+    // mqttClient?.connected &&
+    // console.log(`omniciema/screening/${screening._id}`);
+    mqttClient?.connected &&
+      mqttClient.publish(
+        `omnicinema/screening/${req.screeningId}`,
+        JSON.stringify(updatedScreening)
+      );
     return res.status(200).json(newOrder);
   } catch (error) {
     console.log(error);
