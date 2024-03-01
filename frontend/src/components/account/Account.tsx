@@ -52,7 +52,7 @@ export default function Account() {
 						<p>Email: {account.email}</p>
 					</div>
 				)}
-				{account.orders.length !== 0 && (
+				{account.orders && account.orders.length !== 0 && (
 					<div className='grid grid-cols-2 grid-flow-row p-4'>
 						{account.orders?.map((order) => (
 							<div
