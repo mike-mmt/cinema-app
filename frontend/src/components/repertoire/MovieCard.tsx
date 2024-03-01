@@ -23,7 +23,7 @@ export default function MovieCard({ movie }: Props) {
 	const handleToggleCurrentlyScreening = (e: React.MouseEvent) => {
 		e.stopPropagation();
 		axios
-			.patch(import.meta.env.VITE_BACKEND_URL + '/movie/' + movie._id, {
+			.patch(process.env.BACKEND_URL + '/movie/' + movie._id, {
 				isCurrentlyScreening: (!movie.isCurrentlyScreening).toString(),
 			})
 			.then((response) => {

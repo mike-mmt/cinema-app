@@ -25,7 +25,7 @@ export default function AddScreening({ movieId, setShow, initialDate, setScreeni
 		}),
 		onSubmit: async (values) => {
 			axios
-				.post(import.meta.env.VITE_BACKEND_URL + '/screenings', {
+				.post(process.env.BACKEND_URL + '/screenings', {
 					movieId,
 					date: values.date,
 					type: values.type,

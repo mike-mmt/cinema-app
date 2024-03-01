@@ -63,7 +63,7 @@ export default function Stats() {
 	const [year, setYear] = useState(new Date());
 
 	useEffect(() => {
-		axios.get(import.meta.env.VITE_BACKEND_URL + '/orders/stats').then((response) => {
+		axios.get(process.env.BACKEND_URL + '/orders/stats').then((response) => {
 			// console.log('total');
 			// console.log(response.data);
 			dispatch({
@@ -78,7 +78,7 @@ export default function Stats() {
 	}, []);
 
 	const fetchDayStats = async (date: Date) => {
-		const response = await axios.get(import.meta.env.VITE_BACKEND_URL + '/orders/stats', {
+		const response = await axios.get(process.env.BACKEND_URL + '/orders/stats', {
 			params: {
 				dateFrom: new Date(date.setHours(0, 0, 0, 0)).toISOString(),
 				dateTo: new Date(date.setHours(23, 59, 59, 999)).toISOString(),
@@ -91,7 +91,7 @@ export default function Stats() {
 	};
 
 	const fetchMonthStats = async (date: Date) => {
-		const response = await axios.get(import.meta.env.VITE_BACKEND_URL + '/orders/stats', {
+		const response = await axios.get(process.env.BACKEND_URL + '/orders/stats', {
 			params: {
 				dateFrom: new Date(date.getFullYear(), date.getMonth(), 1).toISOString(),
 				dateTo: new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString(),
@@ -106,7 +106,7 @@ export default function Stats() {
 	};
 
 	const fetchYearStats = async (date: Date) => {
-		const response = await axios.get(import.meta.env.VITE_BACKEND_URL + '/orders/stats', {
+		const response = await axios.get(process.env.BACKEND_URL + '/orders/stats', {
 			params: {
 				dateFrom: new Date(date.getFullYear(), 0, 0, 0, 0, 0, 0).toISOString(),
 				dateTo: new Date(date.getFullYear(), 11, 31, 0, 0, 0, 0).toISOString(),

@@ -21,7 +21,7 @@ export default function Image({ src, className, movieId, setHasChanged }: Props)
 
 	async function handleDelete(event: React.MouseEvent) {
 		event.stopPropagation();
-		const response = await axios.delete(import.meta.env.VITE_BACKEND_URL + '/movie/' + movieId + '/galleryPhoto', {
+		const response = await axios.delete(process.env.BACKEND_URL + '/movie/' + movieId + '/galleryPhoto', {
 			params: {
 				galleryPhotoUrl: src,
 			},

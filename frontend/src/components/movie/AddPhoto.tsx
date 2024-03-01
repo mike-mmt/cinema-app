@@ -45,7 +45,7 @@ export default function AddPhoto({ movieId, setShow }: Props) {
 
 		const response = await axios.patch(
 			// 'http://localhost:5000/movie/65a441df0ef18e3b0ef7e6ef',
-			import.meta.env.VITE_BACKEND_URL + '/movie/' + movieId,
+			process.env.BACKEND_URL + '/movie/' + movieId,
 			formData,
 			{
 				headers: {

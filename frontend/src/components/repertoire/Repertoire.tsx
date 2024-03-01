@@ -60,7 +60,7 @@ export default function Repertoire() {
 	});
 
 	useEffect(() => {
-		axios.get(import.meta.env.VITE_BACKEND_URL + '/movies').then((response) => {
+		axios.get(process.env.BACKEND_URL + '/movies').then((response) => {
 			console.log(response);
 
 			const dispatchBody = {
@@ -73,7 +73,7 @@ export default function Repertoire() {
 	}, []);
 
 	const fetchMovieCount = async () => {
-		const response = await axios.get(import.meta.env.VITE_BACKEND_URL + '/movies/count');
+		const response = await axios.get(process.env.BACKEND_URL + '/movies/count');
 		response.status === 200 && setMovieCount(response.data);
 	};
 

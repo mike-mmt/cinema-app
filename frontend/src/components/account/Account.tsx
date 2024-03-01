@@ -33,7 +33,7 @@ export default function Account() {
 	const [account, setAccount] = useState({} as Account);
 
 	useLayoutEffect(() => {
-		axios.get(import.meta.env.VITE_BACKEND_URL + '/account').then((response) => {
+		axios.get(process.env.BACKEND_URL + '/account').then((response) => {
 			console.log(response.data);
 
 			response.status === 200 && setAccount(response.data);

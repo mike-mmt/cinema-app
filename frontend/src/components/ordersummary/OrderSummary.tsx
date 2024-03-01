@@ -26,7 +26,7 @@ export default function OrderSummary() {
 
 	const payForOrder = async () => {
 		// payment logic would be here
-		const response = await axios.post(import.meta.env.VITE_BACKEND_URL + '/orders', {
+		const response = await axios.post(process.env.BACKEND_URL + '/orders', {
 			screeningId: screening._id,
 			seats: selectedSeats,
 		});

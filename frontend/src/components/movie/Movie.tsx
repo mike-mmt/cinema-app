@@ -41,7 +41,7 @@ export default function Movie() {
 	useEffect(() => {
 		if (!showAddPhoto && !showAddTrailer) {
 			axios
-				.get(import.meta.env.VITE_BACKEND_URL + '/movie/' + movieId, {
+				.get(process.env.BACKEND_URL + '/movie/' + movieId, {
 					params: {
 						from: new Date(startDate.setHours(0, 0, 0, 0)),
 						to: new Date(startDate.setHours(23, 59, 59, 999)),

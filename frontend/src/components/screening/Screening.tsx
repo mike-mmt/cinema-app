@@ -16,7 +16,7 @@ export default function Screening() {
 	const [colsAmount, setColsAmount] = useState(16);
 
 	useEffect(() => {
-		axios.get(import.meta.env.VITE_BACKEND_URL + '/screenings/' + screeningId).then((response) => {
+		axios.get(process.env.BACKEND_URL + '/screenings/' + screeningId).then((response) => {
 			// console.log(response.data);
 			if (response.status === 200) {
 				setScreening(response.data);

@@ -25,7 +25,7 @@ export default function ScreeningsList({ screenings, setScreeningsHaveChanged }:
 
 	async function handleDelete(event: React.MouseEvent, id: string) {
 		event.stopPropagation();
-		axios.delete(import.meta.env.VITE_BACKEND_URL + '/screenings/' + id).then(() => {
+		axios.delete(process.env.BACKEND_URL + '/screenings/' + id).then(() => {
 			setScreeningsHaveChanged && setScreeningsHaveChanged(true);
 		});
 

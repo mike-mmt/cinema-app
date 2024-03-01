@@ -62,7 +62,7 @@ export default function AddMovieForm() {
 				formData.append('photoUrl', values.photoUrl);
 			}
 
-			const response = await axios.post(import.meta.env.VITE_BACKEND_URL + '/movie', formData, {
+			const response = await axios.post(process.env.BACKEND_URL + '/movie', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 				},

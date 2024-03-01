@@ -33,7 +33,7 @@ export default function AddTrailer({ movieId, setShow }: Props) {
 			...values,
 		};
 
-		const response = await axios.patch(import.meta.env.VITE_BACKEND_URL + '/movie/' + movieId, body);
+		const response = await axios.patch(process.env.BACKEND_URL + '/movie/' + movieId, body);
 		console.log(response);
 	}
 

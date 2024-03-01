@@ -41,7 +41,7 @@ export default function RegisterForm() {
 
 	async function sendRegisterData(values: valuesType) {
 		try {
-			const response = await axios.post(import.meta.env.VITE_BACKEND_URL + '/register', values);
+			const response = await axios.post(process.env.BACKEND_URL + '/register', values);
 			console.log(response.status, response.data);
 
 			if (response.status === 201) {

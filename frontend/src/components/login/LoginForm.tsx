@@ -37,7 +37,7 @@ export default function LoginForm() {
 		try {
 			console.log(values);
 
-			const response = await axios.post(import.meta.env.VITE_BACKEND_URL + '/login', values);
+			const response = await axios.post(process.env.BACKEND_URL + '/login', values);
 			if (response.status === 200 && response.data.token) {
 				setToken(response.data.token, response.data.isAdmin || false);
 				loginContext?.setLoggedIn(true);
